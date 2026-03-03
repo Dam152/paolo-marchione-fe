@@ -17,4 +17,10 @@ export const typography = defineTextStyles({
       fontSize: '1.6rem',
     },
   },
+
+  bodyLarge: {
+    value: {
+      fontSize: '2rem',
+    },
+  },
 });

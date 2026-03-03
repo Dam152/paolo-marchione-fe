@@ -34,10 +34,10 @@ export function Text({
   as = 'span',
   className,
   children,
-  fontSize,
+  fontSize = 'bodyLarge',
   font,
   fontWeight,
-  textColor,
+  textColor = 'Black',
   ...props
 }: TextProps) {
   const Component = as;
