@@ -18,9 +18,13 @@
     "prepare": "husky",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "slicemachine": "start-slicemachine"
   },
   "dependencies": {
+    "@prismicio/client": "^7.21.6",
+    "@prismicio/next": "^2.2.2",
+    "@prismicio/react": "^3.4.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@vitest/coverage-v8": "^4.0.18",
     "next": "16.1.6",
@@ -38,6 +42,7 @@
     "@next/bundle-analyzer": "^16.1.6",
     "@pandacss/dev": "^1.8.2",
     "@playwright/test": "^1.58.2",
+    "@slicemachine/adapter-next": "^0.3.95",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^20.19.35",
@@ -51,6 +56,7 @@
     "jsdom": "^28.1.0",
     "lint-staged": "^16.3.1",
     "prettier": "^3.8.1",
+    "slice-machine-ui": "^2.21.1",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   },
