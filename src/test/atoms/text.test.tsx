@@ -8,7 +8,7 @@ describe('Text component', () => {
       <Text
         fontSize={'test'}
         fontWeight={'font-light'}
-        font={'geist'}
+        font={'neueMontreal'}
         className="test-class"
         as="p"
       >
