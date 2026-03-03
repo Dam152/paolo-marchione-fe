@@ -14,7 +14,7 @@ const styles = {
   }),
 };
 
-type NextImageProps = Omit<ImageProps, 'priority'> & {
+export type NextImageProps = Omit<ImageProps, 'priority'> & {
   lazy?: boolean;
   wrapperStyle?: string;
   objectFit?: 'cover' | 'contain';

@@ -4,6 +4,7 @@ import { env } from '@/config/env';
 import localFont from 'next/font/local';
 import { Header } from '@/components/organisms/Header';
 import { AosProvider } from '@/provider/AosProvider';
+import { FullscreenGlobalResize } from '@/components/FullScreenGlobalResize';
 
 const neueMonteral = localFont({
   src: '../../public/Neue Montreal/NeueMontreal-Regular.otf',
@@ -26,6 +27,7 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <AosProvider />
+        <FullscreenGlobalResize />
       </body>
     </html>
   );

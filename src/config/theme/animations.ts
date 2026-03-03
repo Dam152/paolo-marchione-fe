@@ -55,4 +55,12 @@ export const animations = {
     '0%': { height: 'var(--height)' },
     '100%': { height: '0' },
   },
+  zoomFadeIn: {
+    '0%': { transform: 'translateY(100%)' },
+    '100%': { transform: 'translateY(0)' },
+  },
+  zoomFadeOut: {
+    '0%': { transform: 'translateY(0)' },
+    '100%': { transform: 'translateY(100%)' },
+  },
 };

@@ -7,7 +7,7 @@ const styles = {
   root: css({
     w: '100%',
     position: 'relative',
-    zIndex: 51,
+    zIndex: 62,
     bg: 'White',
     display: 'flex',
     flexDirection: 'column',

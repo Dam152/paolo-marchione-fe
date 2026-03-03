@@ -4,10 +4,13 @@ import { container } from '../../panda/patterns';
 import { Fragment } from 'react/jsx-runtime';
 import { CategoryCard } from '@/components/molecules/CategoryCard/CategoryCard';
 import { Text } from '@/components/atoms/Text';
+import { VideoCard } from '@/components/molecules/VideoCard';
 
 export default async function Home() {
   const client = createClient();
-  const categories = await client.getAllByType('category');
+  const categories = await client.getAllByType('category', {
+    orderings: [{ field: 'document.first_publication_date', direction: 'asc' }],
+  });
 
   return (
     <div
@@ -33,7 +36,12 @@ export default async function Home() {
         <Fragment key={category.id}>
           <CategoryCard title={category.data.title} />
           {category.data.video.map((item, index) => (
-            <div key={index}>{item.title}</div>
+            <VideoCard
+              key={item.image.id || index}
+              image={item.image}
+              videoUrl={item.video}
+              title={item.title}
+            />
           ))}
         </Fragment>
       ))}
