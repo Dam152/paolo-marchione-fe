@@ -3,6 +3,7 @@ import { css, cx } from '../../panda/css';
 import { container } from '../../panda/patterns';
 import { Fragment } from 'react/jsx-runtime';
 import { CategoryCard } from '@/components/molecules/CategoryCard/CategoryCard';
+import { Text } from '@/components/atoms/Text';
 
 export default async function Home() {
   const client = createClient();
@@ -24,6 +25,10 @@ export default async function Home() {
         }),
       )}
     >
+      <Text as="h1" className={css({ srOnly: true })}>
+        Paolo Marchione
+      </Text>
+
       {categories.map((category) => (
         <Fragment key={category.id}>
           <CategoryCard title={category.data.title} />
