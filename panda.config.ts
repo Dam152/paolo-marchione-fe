@@ -50,6 +50,7 @@ export default defineConfig({
       fontSize: '62.5%',
     },
     body: {
+      bg: 'white',
       fontSize: '1.6rem',
       fontFamily: 'neueMontreal',
       overflowX: 'hidden',
