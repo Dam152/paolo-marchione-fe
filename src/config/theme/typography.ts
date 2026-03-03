@@ -1,8 +1,7 @@
 import { defineTextStyles, defineTokens } from '@pandacss/dev';
 
 export const fonts = defineTokens.fonts({
-  geist: { value: 'var(--font-geist-sans), sans-serif' },
-  geistMono: { value: 'var(--font-geist-mono), monospace' },
+  neueMontreal: { value: 'var(--font-neue-monteral), sans-serif' },
 });
 
 export const fontWeights = defineTokens.fontWeights({

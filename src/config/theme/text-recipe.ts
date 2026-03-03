@@ -4,19 +4,19 @@ import { colormap } from './colormap';
 import { fonts, fontWeights, typography } from './typography';
 
 const fontSizeVariants = Object.fromEntries(
-  Object.keys(typography).map((key) => [key, { textStyle: key }])
+  Object.keys(typography).map((key) => [key, { textStyle: key }]),
 ) as RecipeVariantRecord[string];
 
 const fontWeightVariants = Object.fromEntries(
-  Object.keys(fontWeights).map((key) => [key, { fontWeight: key }])
+  Object.keys(fontWeights).map((key) => [key, { fontWeight: key }]),
 ) as RecipeVariantRecord[string];
 
 const textColorVariants = Object.fromEntries(
-  Object.keys(colormap).map((key) => [key, { color: key }])
+  Object.keys(colormap).map((key) => [key, { color: key }]),
 ) as RecipeVariantRecord[string];
 
 const fontVariants = Object.fromEntries(
-  Object.keys(fonts).map((key) => [key, { font: key }])
+  Object.keys(fonts).map((key) => [key, { font: key }]),
 ) as RecipeVariantRecord[string];
 
 export const textRecipe = defineRecipe({
@@ -29,6 +29,6 @@ export const textRecipe = defineRecipe({
     textColor: textColorVariants,
   },
   defaultVariants: {
-    font: 'geist',
+    font: 'neueMontreal',
   },
 });

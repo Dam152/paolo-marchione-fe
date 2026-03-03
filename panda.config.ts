@@ -51,7 +51,7 @@ export default defineConfig({
     },
     body: {
       fontSize: '1.6rem',
-      fontFamily: 'geist',
+      fontFamily: 'neueMontreal',
       overflowX: 'hidden',
     },
   },
