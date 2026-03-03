@@ -1,0 +1,61 @@
+{
+  "name": "axiom-dev-fe",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.28.2",
+  "scripts": {
+    "dev": "rm -rf .next && next dev",
+    "build": "next build",
+    "build:analyze": "ANALYZE=true next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "type-check": "tsc --noEmit",
+    "prepare-panda": "panda codegen",
+    "prepare": "husky",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "preinstall": "npx only-allow pnpm"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@vitest/coverage-v8": "^4.0.18",
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-intersection-observer": "^10.0.3",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.1",
+    "@changesets/changelog-github": "^0.5.2",
+    "@changesets/cli": "^2.30.0",
+    "@commitlint/cli": "^20.4.2",
+    "@commitlint/config-conventional": "^20.4.2",
+    "@next/bundle-analyzer": "^16.1.6",
+    "@pandacss/dev": "^1.8.2",
+    "@playwright/test": "^1.58.2",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^20.19.35",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.4",
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9.39.3",
+    "eslint-config-next": "16.1.6",
+    "husky": "^9.1.7",
+    "jsdom": "^28.1.0",
+    "lint-staged": "^16.3.1",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs}": "eslint --fix",
+    "*.{json,md,css}": "prettier --write"
+  }
+}
