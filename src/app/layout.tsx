@@ -3,6 +3,7 @@ import './globals.css';
 import { env } from '@/config/env';
 import localFont from 'next/font/local';
 import { Header } from '@/components/organisms/Header';
+import { AosProvider } from '@/provider/AosProvider';
 
 const neueMonteral = localFont({
   src: '../../public/Neue Montreal/NeueMontreal-Regular.otf',
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body>
         <Header />
         <main>{children}</main>
+        <AosProvider />
       </body>
     </html>
   );
