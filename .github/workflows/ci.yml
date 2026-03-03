@@ -13,6 +13,9 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_NAME: Starter Next js
     steps:
       - uses: actions/checkout@v4
 
