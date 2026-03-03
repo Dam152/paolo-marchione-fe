@@ -47,4 +47,12 @@ export const animations = {
       transform: 'translateY(-100%)',
     },
   },
+  collapseDown: {
+    '0%': { height: '0' },
+    '100%': { height: 'var(--height)' },
+  },
+  collapseUp: {
+    '0%': { height: 'var(--height)' },
+    '100%': { height: '0' },
+  },
 };

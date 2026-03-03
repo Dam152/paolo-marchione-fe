@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import { HeaderMenu } from '@/components/molecules/HeaderMenu';
@@ -39,18 +39,18 @@ describe('HeaderMenu', () => {
       );
     });
 
-    it('all buttons are initially aria-expanded false', () => {
+    it('all nav buttons are initially aria-expanded false', () => {
       render(<HeaderMenu {...defaultProps} />);
 
-      screen
+      within(screen.getByRole('navigation'))
         .getAllByRole('button')
         .forEach((btn) => expect(btn).toHaveAttribute('aria-expanded', 'false'));
     });
 
-    it('all buttons have aria-controls pointing to the panel', () => {
+    it('all nav buttons have aria-controls pointing to the panel', () => {
       render(<HeaderMenu {...defaultProps} />);
 
-      screen
+      within(screen.getByRole('navigation'))
         .getAllByRole('button')
         .forEach((btn) => expect(btn).toHaveAttribute('aria-controls', 'header-nav-panel'));
     });

@@ -1,13 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Menu } from 'lucide-react';
 import { KeyTextField } from '@prismicio/client';
 import { Button } from '@/components/atoms/Button';
 import { NextLink } from '@/components/atoms/NextLink';
+import { Text } from '@/components/atoms/Text';
+import { CustomDrawer } from '@/components/molecules/CustomDrawer';
 import { css, cx } from '../../../../panda/css';
 import { container } from '../../../../panda/patterns';
 import { text } from '../../../../panda/recipes';
-import { Text } from '@/components/atoms/Text';
 
 type MenuItem = {
   label: KeyTextField;
@@ -31,7 +33,7 @@ const styles = {
     },
   }),
   nav: css({
-    display: 'flex',
+    display: { base: 'none', md: 'flex' },
     alignItems: 'center',
     gap: { base: '16px', md: '54px' },
   }),
@@ -63,10 +65,28 @@ const styles = {
       md: '86px',
     },
   }),
+  hamburger: css({
+    display: { base: 'flex', md: 'none' },
+    alignItems: 'center',
+    justifyContent: 'center',
+    w: '44px',
+    h: '44px',
+    mr: '-14px',
+    cursor: 'pointer',
+    borderRadius: '4px',
+    transition: 'opacity 0.2s ease',
+    _hover: { opacity: 0.6 },
+    _focusVisible: {
+      outline: '2px solid token(colors.Black)',
+      outlineOffset: '2px',
+    },
+  }),
 };
 
 export function HeaderMenu({ items, appName }: HeaderMenuProps) {
   const [activeLabel, setActiveLabel] = useState<string | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const activeItem = items.find((i) => i.label === activeLabel);
   const isOpen = !!activeItem;
 
@@ -94,6 +114,7 @@ export function HeaderMenu({ items, appName }: HeaderMenuProps) {
           {appName}
         </NextLink>
 
+        {/* Desktop nav */}
         <nav aria-label="Navigazione principale" className={styles.nav}>
           {items.map((item) => (
             <Button
@@ -117,8 +138,20 @@ export function HeaderMenu({ items, appName }: HeaderMenuProps) {
             </Button>
           ))}
         </nav>
+
+        {/* Mobile hamburger */}
+        <Button
+          aria-label="Apri menu"
+          aria-expanded={isDrawerOpen}
+          aria-controls="mobile-nav-drawer"
+          className={styles.hamburger}
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <Menu size={24} aria-hidden="true" />
+        </Button>
       </div>
 
+      {/* Desktop dropdown panel */}
       <div className={cx(styles.panelWrapper, isOpen && styles.panelWrapperOpen)}>
         <div
           id="header-nav-panel"
@@ -132,6 +165,14 @@ export function HeaderMenu({ items, appName }: HeaderMenuProps) {
           </div>
         </div>
       </div>
+
+      {/* Mobile drawer */}
+      <CustomDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        items={items}
+        appName={appName}
+      />
     </>
   );
 }
