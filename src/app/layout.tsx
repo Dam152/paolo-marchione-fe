@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { env } from '@/config/env';
 import localFont from 'next/font/local';
+import { Header } from '@/components/organisms/Header';
 
 const neueMonteral = localFont({
   src: '../../public/Neue Montreal/NeueMontreal-Regular.otf',
@@ -21,7 +22,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${neueMonteral.variable} `}>
       <body>
-        <main> {children}</main>
+        <Header />
+        <main>{children}</main>
       </body>
     </html>
   );

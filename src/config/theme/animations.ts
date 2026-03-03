@@ -31,4 +31,20 @@ export const animations = {
       opacity: '0',
     },
   },
+  slideDown: {
+    '0%': {
+      transform: 'translateY(-100%)',
+    },
+    '100%': {
+      transform: 'translateY(0)',
+    },
+  },
+  slideUp: {
+    '0%': {
+      transform: 'translateY(0)',
+    },
+    '100%': {
+      transform: 'translateY(-100%)',
+    },
+  },
 };

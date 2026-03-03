@@ -20,7 +20,7 @@ export const typography = defineTextStyles({
 
   bodyLarge: {
     value: {
-      fontSize: '2rem',
+      fontSize: { base: '1.6rem', md: '2rem' },
     },
   },
 });
