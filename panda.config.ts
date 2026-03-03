@@ -2,6 +2,7 @@ import { animations } from '@/config/theme/animations';
 import { breakpoints } from '@/config/theme/breakpoints';
 import { buttonRecipe } from '@/config/theme/button-recipe';
 import { colormap } from '@/config/theme/colormap';
+import { container } from '@/config/theme/patterns';
 import { textRecipe } from '@/config/theme/text-recipe';
 import { fonts, fontWeights, typography } from '@/config/theme/typography';
 import { defineConfig } from '@pandacss/dev';
@@ -32,6 +33,12 @@ export default defineConfig({
         text: textRecipe,
         button: buttonRecipe,
       },
+    },
+  },
+
+  patterns: {
+    extend: {
+      container,
     },
   },
 
