@@ -22,7 +22,7 @@
     "slicemachine": "start-slicemachine"
   },
   "dependencies": {
-    "@ark-ui/react": "^5.34.0",
+    "@ark-ui/react": "^5.34.1",
     "@park-ui/panda-preset": "^0.43.1",
     "@prismicio/client": "^7.21.6",
     "@prismicio/next": "^2.2.2",
@@ -31,14 +31,14 @@
     "@vitest/coverage-v8": "^4.0.18",
     "lucide-react": "^0.576.0",
     "next": "16.1.6",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
     "react-intersection-observer": "^10.0.3",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.1",
-    "@changesets/changelog-github": "^0.5.2",
+    "@changesets/changelog-github": "^0.6.0",
     "@changesets/cli": "^2.30.0",
     "@commitlint/cli": "^20.4.2",
     "@commitlint/config-conventional": "^20.4.2",
