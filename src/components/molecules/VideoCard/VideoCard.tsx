@@ -165,30 +165,40 @@ export function VideoCard({
     }
   }
 
+  const hasVideo = !disabled && !!videoUrl?.html;
+
+  const cardContent = (
+    <>
+      <NextImage
+        alt={image.alt || String(title || 'Guarda video')}
+        src={image.url!}
+        sizes="410px"
+        lazy={!preload}
+        preload={preload}
+        className={styles.trigger}
+        width={410}
+        height={410}
+      />
+      {!disabled && (
+        <div data-overlay aria-hidden="true" className={styles.overlay}>
+          <span className={text({ fontSize: 'bodyLarge', textColor: 'White' })}>{title}</span>
+        </div>
+      )}
+    </>
+  );
+
+  if (!hasVideo) {
+    return (
+      <div data-aos="fade-up" className={styles.triggerWrapper}>
+        {cardContent}
+      </div>
+    );
+  }
+
   return (
     <Dialog.Root lazyMount preventScroll onOpenChange={handleOpenChange}>
-      <Dialog.Trigger
-        // aria-label={String(title || 'Guarda video')}
-        data-aos="fade-up"
-        suppressHydrationWarning
-        disabled={disabled || !videoUrl?.html}
-        className={styles.triggerWrapper}
-      >
-        <NextImage
-          alt={image.alt || String(title || 'Guarda video')}
-          src={image.url!}
-          sizes="410px"
-          lazy={!preload}
-          preload={preload}
-          className={styles.trigger}
-          width={410}
-          height={410}
-        />
-        {!disabled && videoUrl?.html && (
-          <div data-overlay aria-hidden="true" className={styles.overlay}>
-            <span className={text({ fontSize: 'bodyLarge', textColor: 'White' })}>{title}</span>
-          </div>
-        )}
+      <Dialog.Trigger data-aos="fade-up" suppressHydrationWarning className={styles.triggerWrapper}>
+        {cardContent}
       </Dialog.Trigger>
 
       <Portal>
@@ -236,13 +246,11 @@ export function VideoCard({
                   </Button>
                 </Dialog.CloseTrigger>
               </div>
-              {videoUrl.html && (
-                <div
-                  className={cx(styles.videoCol, animatedItemClass)}
-                  style={animStyle('0.3s')}
-                  dangerouslySetInnerHTML={{ __html: videoUrl.html }}
-                />
-              )}
+              <div
+                className={cx(styles.videoCol, animatedItemClass)}
+                style={animStyle('0.3s')}
+                dangerouslySetInnerHTML={{ __html: videoUrl.html! }}
+              />
             </div>
           </Dialog.Content>
         </Dialog.Positioner>

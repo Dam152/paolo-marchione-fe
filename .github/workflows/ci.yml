@@ -16,6 +16,7 @@ jobs:
     env:
       NEXT_PUBLIC_APP_URL: http://localhost:3000
       NEXT_PUBLIC_APP_NAME: Starter Next js
+      NEXT_PUBLIC_REVALIDATE_TIME: 5
     steps:
       - uses: actions/checkout@v4
 
