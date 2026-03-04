@@ -12,7 +12,6 @@ export default async function Home() {
   });
 
   const settings = await client.getSingle('settings');
-  console.log('Settings:', settings);
 
   return (
     <>
