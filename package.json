@@ -5,7 +5,7 @@
   "packageManager": "pnpm@10.28.2",
   "scripts": {
     "dev": "rm -rf .next && next dev",
-    "build": "next build",
+    "build": " pnpm prepare-panda &&next build",
     "build:analyze": "ANALYZE=true next build",
     "start": "next start",
     "lint": "eslint",
