@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { css, cx } from '../../panda/css';
 import { container } from '../../panda/patterns';
 import { Text } from '@/components/atoms/Text';
