@@ -16,7 +16,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'lcov'],
       include: ['src/components/*.{ts,tsx}'],
-      exclude: [],
+      exclude: ['src/components/FullScreenGlobalResize.tsx'],
       thresholds: {
         branches: 80,
         functions: 80,

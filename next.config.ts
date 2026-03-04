@@ -8,6 +8,7 @@ const ContentSecurityPolicy = `
   img-src 'self' data: blob: https://images.prismic.io;
   font-src 'self';
   connect-src 'self';
+  frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com;
   frame-ancestors 'none';
   base-uri 'self';
   form-action 'self';

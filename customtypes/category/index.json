@@ -32,6 +32,27 @@
                 "placeholder": "title"
               }
             },
+            "starring": {
+              "type": "Text",
+              "config": {
+                "label": "Starring",
+                "placeholder": ""
+              }
+            },
+            "client": {
+              "type": "Text",
+              "config": {
+                "label": "Client",
+                "placeholder": ""
+              }
+            },
+            "production": {
+              "type": "Text",
+              "config": {
+                "label": "Production",
+                "placeholder": ""
+              }
+            },
             "image": {
               "type": "Image",
               "config": {

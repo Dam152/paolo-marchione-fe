@@ -140,5 +140,35 @@ describe('HeaderMenu', () => {
 
       expect(document.getElementById('header-nav-panel')).not.toHaveAttribute('inert');
     });
+
+    it('closes the panel when clicking outside (window click)', () => {
+      render(<HeaderMenu {...defaultProps} />);
+
+      fireEvent.click(screen.getByRole('button', { name: 'About' }));
+      expect(document.getElementById('header-nav-panel')).not.toHaveAttribute('inert');
+
+      fireEvent.click(document.body);
+
+      expect(document.getElementById('header-nav-panel')).toHaveAttribute('inert');
+    });
+
+    it('does not close the panel when clicking a nav button (stopPropagation)', () => {
+      render(<HeaderMenu {...defaultProps} />);
+
+      fireEvent.click(screen.getByRole('button', { name: 'About' }));
+
+      // Click Work: stopPropagation prevents window from firing, panel switches to Work
+      fireEvent.click(screen.getByRole('button', { name: 'Work' }));
+
+      expect(document.getElementById('header-nav-panel')).not.toHaveAttribute('inert');
+    });
+
+    it('window click listener is inactive when panel is closed', () => {
+      render(<HeaderMenu {...defaultProps} />);
+
+      // Panel is never opened — window click should not cause errors
+      expect(() => fireEvent.click(document.body)).not.toThrow();
+      expect(document.getElementById('header-nav-panel')).toHaveAttribute('inert');
+    });
   });
 });

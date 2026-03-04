@@ -53,6 +53,7 @@ export function NextImage({
         src={src}
         alt={alt}
         sizes={sizes}
+        priority={preload}
         loading={preload ? 'eager' : lazy ? 'lazy' : 'eager'}
         fetchPriority={preload ? 'high' : undefined}
         {...props}

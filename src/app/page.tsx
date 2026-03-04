@@ -1,10 +1,8 @@
 import { createClient } from '@/prismicio';
 import { css, cx } from '../../panda/css';
 import { container } from '../../panda/patterns';
-import { Fragment } from 'react/jsx-runtime';
-import { CategoryCard } from '@/components/molecules/CategoryCard/CategoryCard';
 import { Text } from '@/components/atoms/Text';
-import { VideoCard } from '@/components/molecules/VideoCard';
+import { CategoryGrid } from '@/components/molecules/CategoryGrid/CategoryGrid';
 
 export default async function Home() {
   const client = createClient();
@@ -32,19 +30,7 @@ export default async function Home() {
         Paolo Marchione
       </Text>
 
-      {categories.map((category) => (
-        <Fragment key={category.id}>
-          <CategoryCard title={category.data.title} />
-          {category.data.video.map((item, index) => (
-            <VideoCard
-              key={item.image.id || index}
-              image={item.image}
-              videoUrl={item.video}
-              title={item.title}
-            />
-          ))}
-        </Fragment>
-      ))}
+      <CategoryGrid categories={categories} />
     </div>
   );
 }

@@ -93,12 +93,20 @@ export function HeaderMenu({ items, appName }: HeaderMenuProps) {
   const [displayedContent, setDisplayedContent] = useState<KeyTextField>(null);
 
   useEffect(() => {
-    if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setActiveLabel(null);
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    function handleWindowClick() {
+      setActiveLabel(null);
+    }
+    window.addEventListener('click', handleWindowClick);
+    return () => window.removeEventListener('click', handleWindowClick);
   }, [isOpen]);
 
   return (
@@ -128,7 +136,8 @@ export function HeaderMenu({ items, appName }: HeaderMenuProps) {
                   textColor: isOpen && item.label !== activeLabel ? 'Gray' : 'Black',
                 }),
               )}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 const next = activeLabel === item.label ? null : item.label;
                 setActiveLabel(next);
                 if (next) setDisplayedContent(item.content);

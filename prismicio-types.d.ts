@@ -72,6 +72,36 @@ export interface CategoryDocumentDataVideoItem {
   title: prismic.KeyTextField;
 
   /**
+   * Starring field in *Category → Video*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: category.video[].starring
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  starring: prismic.KeyTextField;
+
+  /**
+   * Client field in *Category → Video*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: category.video[].client
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  client: prismic.KeyTextField;
+
+  /**
+   * Production field in *Category → Video*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: category.video[].production
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  production: prismic.KeyTextField;
+
+  /**
    * Image field in *Category → Video*
    *
    * - **Field Type**: Image
