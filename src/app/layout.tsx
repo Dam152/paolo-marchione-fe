@@ -5,24 +5,32 @@ import localFont from 'next/font/local';
 import { Header } from '@/components/organisms/Header';
 import { AosProvider } from '@/provider/AosProvider';
 import { FullscreenGlobalResize } from '@/components/FullScreenGlobalResize';
+import { createClient } from '@/prismicio';
 
 const neueMonteral = localFont({
   src: '../../public/Neue Montreal/NeueMontreal-Regular.otf',
   variable: '--font-neue-monteral',
 });
 
-export const metadata: Metadata = {
-  title: env.NEXT_PUBLIC_APP_NAME,
-  description: env.NEXT_PUBLIC_APP_NAME,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const client = createClient();
+  const settings = await client.getSingle('settings');
 
-export default function RootLayout({
+  return {
+    title: settings.data.meta_title || env.NEXT_PUBLIC_APP_NAME,
+    description: settings.data.meta_description || '',
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const client = createClient();
+  const settings = await client.getSingle('settings');
   return (
-    <html lang="en" className={`${neueMonteral.variable} `}>
+    <html lang={settings.lang} className={`${neueMonteral.variable} `}>
       <body>
         <Header />
         <main>{children}</main>

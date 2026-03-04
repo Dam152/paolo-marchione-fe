@@ -4,6 +4,7 @@ import AxeBuilder from '@axe-core/playwright';
 test.describe('Accessibility', () => {
   test('homepage has no a11y violations', async ({ page }) => {
     await page.goto('/');
+    await page.waitForSelector('h1');
 
     const results = await new AxeBuilder({ page }).analyze();
 

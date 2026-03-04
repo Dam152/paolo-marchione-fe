@@ -19,9 +19,31 @@ type VideoCardProps = {
   videoUrl: EmbedField;
   image: ImageField;
   preload?: boolean;
+  disabled?: boolean;
 };
 
 const styles = {
+  triggerWrapper: css({
+    position: 'relative',
+    w: '100%',
+    aspectRatio: '1/1',
+    overflow: 'hidden',
+    _hover: {
+      '& [data-overlay]': { opacity: 1 },
+    },
+  }),
+  overlay: css({
+    position: 'absolute',
+    inset: 0,
+    bg: 'Black',
+    opacity: 0,
+    transition: 'opacity 0.3s ease',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    p: '16px',
+    pointerEvents: 'none',
+  }),
   trigger: css({
     cursor: 'pointer',
     w: '100%',
@@ -132,6 +154,7 @@ export function VideoCard({
   videoUrl,
   image,
   preload,
+  disabled = false,
 }: VideoCardProps) {
   const [headerOffset, setHeaderOffset] = useState(0);
 
@@ -145,12 +168,14 @@ export function VideoCard({
   return (
     <Dialog.Root lazyMount preventScroll onOpenChange={handleOpenChange}>
       <Dialog.Trigger
-        aria-label={String(title || 'Guarda video')}
+        // aria-label={String(title || 'Guarda video')}
         data-aos="fade-up"
         suppressHydrationWarning
+        disabled={disabled}
+        className={styles.triggerWrapper}
       >
         <NextImage
-          alt={image.alt ?? ''}
+          alt={image.alt || String(title || 'Guarda video')}
           src={image.url!}
           sizes="410px"
           lazy={!preload}
@@ -159,6 +184,11 @@ export function VideoCard({
           width={410}
           height={410}
         />
+        {!disabled && (
+          <div data-overlay aria-hidden="true" className={styles.overlay}>
+            <span className={text({ fontSize: 'bodyLarge', textColor: 'White' })}>{title}</span>
+          </div>
+        )}
       </Dialog.Trigger>
 
       <Portal>
