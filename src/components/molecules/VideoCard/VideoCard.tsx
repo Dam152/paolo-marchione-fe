@@ -171,7 +171,7 @@ export function VideoCard({
         // aria-label={String(title || 'Guarda video')}
         data-aos="fade-up"
         suppressHydrationWarning
-        disabled={disabled}
+        disabled={disabled || !videoUrl?.html}
         className={styles.triggerWrapper}
       >
         <NextImage
@@ -184,7 +184,7 @@ export function VideoCard({
           width={410}
           height={410}
         />
-        {!disabled && (
+        {!disabled && videoUrl?.html && (
           <div data-overlay aria-hidden="true" className={styles.overlay}>
             <span className={text({ fontSize: 'bodyLarge', textColor: 'White' })}>{title}</span>
           </div>
