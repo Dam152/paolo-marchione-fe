@@ -12,6 +12,7 @@ type CategoryCardProps = {
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   isActive?: boolean;
+  dimmed?: boolean;
 };
 
 export function CategoryCard({
@@ -22,19 +23,18 @@ export function CategoryCard({
   onMouseEnter,
   onMouseLeave,
   isActive = false,
+  dimmed,
 }: CategoryCardProps) {
   return (
     <div
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      data-dimmed={dimmed || undefined}
       className={cx(
         className,
         css({
           w: '100%',
-          display: {
-            base: 'none',
-            md: 'block',
-          },
+          display: 'block',
           animation: 'fadeIn 0.6s ease backwards',
         }),
       )}
@@ -47,18 +47,31 @@ export function CategoryCard({
           onClick?.();
         }}
         className={cx(
-          text({ fontSize: 'bodyLarge', textColor: isActive ? 'White' : 'Black' }),
+          text({ fontSize: 'bodyLarge', textColor: 'Black' }),
           css({
             w: '100%',
-            aspectRatio: '1/1',
-            bg: isActive ? '#191919' : 'Gray',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            px: '24px',
+            py: '20px',
+            bg: 'Gray',
             transition: 'background-color 0.3s ease, color 0.3s ease',
-            ...(!isActive && {
-              _hover: {
-                bg: '#191919',
-                color: 'White',
-              },
-            }),
+            md: {
+              display: 'block',
+              aspectRatio: '1/1',
+              px: '0',
+              py: '0',
+              textAlign: 'center',
+              bg: isActive ? '#191919' : 'Gray',
+              color: isActive ? 'white' : 'black',
+              ...(!isActive && {
+                _hover: {
+                  bg: '#191919',
+                  color: 'white',
+                },
+              }),
+            },
           }),
         )}
       >
