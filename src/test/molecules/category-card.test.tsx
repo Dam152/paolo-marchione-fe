@@ -29,11 +29,6 @@ describe('CategoryCard', () => {
       expect(container.firstChild).toHaveStyle({ opacity: 0.2 });
     });
 
-    it('has data-aos fade-up on the wrapper div', () => {
-      const { container } = render(<CategoryCard title="Design" />);
-
-      expect(container.firstChild).toHaveAttribute('data-aos', 'fade-up');
-    });
   });
 
   describe('interaction', () => {

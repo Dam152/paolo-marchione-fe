@@ -29,14 +29,14 @@ describe('CategoryGrid', () => {
       expect(screen.getByRole('button', { name: 'Film' })).toBeInTheDocument();
     });
 
-    it('renders all categories at full opacity initially', () => {
+    it('renders all categories without dimming initially', () => {
       render(<CategoryGrid categories={categories} />);
 
       const designWrapper = screen.getByRole('button', { name: 'Design' }).parentElement;
       const filmWrapper = screen.getByRole('button', { name: 'Film' }).parentElement;
 
-      expect(designWrapper).toHaveStyle({ opacity: 1 });
-      expect(filmWrapper).toHaveStyle({ opacity: 1 });
+      expect(designWrapper).not.toHaveAttribute('data-dimmed');
+      expect(filmWrapper).not.toHaveAttribute('data-dimmed');
     });
   });
 
@@ -47,56 +47,55 @@ describe('CategoryGrid', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Design' }));
 
       const filmWrapper = screen.getByRole('button', { name: 'Film' }).parentElement;
-      expect(filmWrapper).toHaveStyle({ opacity: 0.2 });
+      expect(filmWrapper).toHaveAttribute('data-dimmed', 'true');
     });
 
-    it('keeps the active category at full opacity', () => {
+    it('keeps the active category not dimmed', () => {
       render(<CategoryGrid categories={categories} />);
 
       fireEvent.click(screen.getByRole('button', { name: 'Design' }));
 
       const designWrapper = screen.getByRole('button', { name: 'Design' }).parentElement;
-      expect(designWrapper).toHaveStyle({ opacity: 1 });
+      expect(designWrapper).not.toHaveAttribute('data-dimmed');
     });
 
-    it('resets all opacities when clicking the active category again', () => {
+    it('removes dimming when clicking the active category again', () => {
       render(<CategoryGrid categories={categories} />);
 
       fireEvent.click(screen.getByRole('button', { name: 'Design' }));
       fireEvent.click(screen.getByRole('button', { name: 'Design' }));
 
       const filmWrapper = screen.getByRole('button', { name: 'Film' }).parentElement;
-      expect(filmWrapper).toHaveStyle({ opacity: 1 });
+      expect(filmWrapper).not.toHaveAttribute('data-dimmed');
     });
 
-    it('resets all opacities when clicking a different category while one is active', () => {
+    it('switches active category when clicking a different one while one is active', () => {
       render(<CategoryGrid categories={categories} />);
 
       fireEvent.click(screen.getByRole('button', { name: 'Design' }));
-      // Film is dimmed; clicking Film while Design is active resets (not switches)
       fireEvent.click(screen.getByRole('button', { name: 'Film' }));
 
       const designWrapper = screen.getByRole('button', { name: 'Design' }).parentElement;
       const filmWrapper = screen.getByRole('button', { name: 'Film' }).parentElement;
 
-      expect(designWrapper).toHaveStyle({ opacity: 1 });
-      expect(filmWrapper).toHaveStyle({ opacity: 1 });
+      expect(designWrapper).toHaveAttribute('data-dimmed', 'true');
+      expect(filmWrapper).not.toHaveAttribute('data-dimmed');
     });
 
-    it('resets all opacities on a window click', () => {
+    it('removes dimming on a window click', () => {
       render(<CategoryGrid categories={categories} />);
 
       fireEvent.click(screen.getByRole('button', { name: 'Design' }));
 
       const filmWrapper = screen.getByRole('button', { name: 'Film' }).parentElement;
-      expect(filmWrapper).toHaveStyle({ opacity: 0.2 });
+      expect(filmWrapper).toHaveAttribute('data-dimmed', 'true');
 
       fireEvent.click(document.body);
 
-      expect(filmWrapper).toHaveStyle({ opacity: 1 });
+      expect(filmWrapper).not.toHaveAttribute('data-dimmed');
     });
 
-    it('does not reset opacity on the same click event that activates the category', () => {
+    it('does not reset dimming on the same click event that activates the category', () => {
       render(<CategoryGrid categories={categories} />);
 
       // Clicking the button uses stopPropagation, so window listener should NOT fire
@@ -104,7 +103,7 @@ describe('CategoryGrid', () => {
 
       const filmWrapper = screen.getByRole('button', { name: 'Film' }).parentElement;
       // Film is still dimmed, meaning the window listener did not fire
-      expect(filmWrapper).toHaveStyle({ opacity: 0.2 });
+      expect(filmWrapper).toHaveAttribute('data-dimmed', 'true');
     });
   });
 });

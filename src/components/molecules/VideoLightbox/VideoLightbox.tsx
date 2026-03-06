@@ -1,0 +1,211 @@
+'use client';
+
+import { Dialog } from '@ark-ui/react/dialog';
+import { Portal } from '@ark-ui/react/portal';
+import { EmbedField, KeyTextField } from '@prismicio/client';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { css, cx } from '../../../../panda/css';
+import { Text } from '@/components/atoms/Text';
+
+export type VideoItem = {
+  title: string | KeyTextField;
+  starring: string | KeyTextField;
+  client: string | KeyTextField;
+  production: string | KeyTextField;
+  videoUrl: EmbedField;
+};
+
+type VideoLightboxProps = {
+  videos: VideoItem[];
+  openIndex: number | null;
+  onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
+};
+
+const styles = {
+  backdrop: css({
+    position: 'fixed',
+    inset: 0,
+    zIndex: 60,
+    bg: 'rgba(0,0,0,0.88)',
+    _open: { animation: 'fadeIn 0.25s ease' },
+    _closed: { animation: 'fadeOut 0.2s ease' },
+  }),
+  positioner: css({
+    position: 'fixed',
+    inset: 0,
+    zIndex: 61,
+    display: 'flex',
+    alignItems: 'center',
+    pointerEvents: 'none',
+  }),
+  content: css({
+    w: '100%',
+    px: '16px',
+    display: 'flex',
+    flexDirection: 'column',
+    pointerEvents: 'auto',
+    md: { px: '24px', maxW: 'min(1640px, calc(100% - 48px))', mx: 'auto' },
+    lg: { px: '32px', maxW: 'min(1640px, calc(100% - 64px))' },
+    '2xl': { px: '48px', maxW: 'min(1640px, calc(100% - 96px))' },
+    _open: { animation: 'fadeIn 0.3s ease' },
+    _closed: { animation: 'fadeOut 0.2s ease' },
+  }),
+  videoWrapper: css({
+    w: '100%',
+    mx: 'auto',
+    md: { maxWidth: '1024px' },
+    aspectRatio: '16/9',
+    overflow: 'hidden',
+    '& iframe': { w: '100%', h: '100%', display: 'block' },
+  }),
+  infoRow: css({
+    w: '100%',
+    mx: 'auto',
+    md: { maxWidth: '1024px' },
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+    mt: '16px',
+  }),
+  bottomRow: css({
+    w: '100%',
+    mx: 'auto',
+    md: { maxWidth: '1024px' },
+    display: 'flex',
+    justifyContent: 'flex-end',
+    mt: '6px',
+  }),
+  closeBtn: css({
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+    cursor: 'pointer',
+    bg: 'transparent',
+    border: 'none',
+    p: 0,
+    transition: 'opacity 0.2s',
+    _hover: { opacity: 0.6 },
+  }),
+  // frecce laterali — solo desktop
+  navBtn: css({
+    display: 'none',
+    xl: {
+      display: 'flex',
+      position: 'fixed',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      color: 'white',
+      cursor: 'pointer',
+      bg: 'transparent',
+      border: 'none',
+      p: '12px',
+      lineHeight: 1,
+      userSelect: 'none',
+      zIndex: 62,
+      transition: 'opacity 0.2s',
+      _hover: { opacity: 0.6 },
+    },
+  }),
+  navBtnDisabled: css({
+    opacity: 0.25,
+    cursor: 'not-allowed',
+    pointerEvents: 'none',
+  }),
+  prevBtn: css({ md: { left: '16px' } }),
+  nextBtn: css({ md: { right: '16px' } }),
+};
+
+export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: VideoLightboxProps) {
+  const isOpen = openIndex !== null;
+  const video = isOpen ? videos[openIndex] : null;
+  const isPrevDisabled = openIndex === 0;
+  const isNextDisabled = openIndex === videos.length - 1;
+
+  return (
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={({ open }) => {
+        if (!open) onClose();
+      }}
+      preventScroll
+      lazyMount
+      unmountOnExit
+    >
+      <Portal>
+        <Dialog.Backdrop className={styles.backdrop} />
+
+        <Dialog.Positioner className={styles.positioner}>
+          <Dialog.Content className={styles.content}>
+            <button
+              className={cx(
+                styles.navBtn,
+                styles.prevBtn,
+                isPrevDisabled ? styles.navBtnDisabled : undefined,
+              )}
+              onClick={onPrev}
+              disabled={isPrevDisabled}
+              aria-label="Video precedente"
+            >
+              <ChevronLeft size={32} strokeWidth={1.5} />
+            </button>
+            <button
+              className={cx(
+                styles.navBtn,
+                styles.nextBtn,
+                isNextDisabled ? styles.navBtnDisabled : undefined,
+              )}
+              onClick={onNext}
+              disabled={isNextDisabled}
+              aria-label="Video successivo"
+            >
+              <ChevronRight size={32} strokeWidth={1.5} />
+            </button>
+
+            {video?.videoUrl?.html && (
+              <div
+                className={styles.videoWrapper}
+                dangerouslySetInnerHTML={{ __html: video.videoUrl.html }}
+              />
+            )}
+
+            {video && (
+              <div className={styles.infoRow}>
+                {video.title && (
+                  <Text as="span" textColor="White" fontSize="body">
+                    Title: {video.title}
+                  </Text>
+                )}
+                {video.starring && (
+                  <Text as="span" textColor="White" fontSize="body">
+                    Starring: {video.starring}
+                  </Text>
+                )}
+                {video.client && (
+                  <Text as="span" textColor="White" fontSize="body">
+                    Client: {video.client}
+                  </Text>
+                )}
+                {video.production && (
+                  <Text as="span" textColor="White" fontSize="body">
+                    Production: {video.production}
+                  </Text>
+                )}
+              </div>
+            )}
+
+            <div className={styles.bottomRow}>
+              <Dialog.CloseTrigger className={styles.closeBtn}>
+                <X size={14} strokeWidth={1.5} color="white" />
+                <Text as="span" textColor="White" fontSize="bodyLarge">
+                  Close
+                </Text>
+              </Dialog.CloseTrigger>
+            </div>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Portal>
+    </Dialog.Root>
+  );
+}

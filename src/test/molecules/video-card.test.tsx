@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { EmbedField, ImageField } from '@prismicio/client';
 
@@ -23,16 +23,9 @@ const mockVideo = {
 
 const defaultProps = {
   title: 'My Video',
-  starring: 'Actor One',
-  client: 'Brand X',
-  production: 'Studio Y',
   videoUrl: mockVideo,
   image: mockImage,
 };
-
-function openDialog() {
-  fireEvent.click(screen.getByRole('img', { name: 'Test thumbnail' }));
-}
 
 describe('VideoCard', () => {
   describe('rendering', () => {
@@ -42,120 +35,54 @@ describe('VideoCard', () => {
       expect(screen.getByRole('img', { name: 'Test thumbnail' })).toBeInTheDocument();
     });
 
-    it('does not render dialog content before the dialog is opened', () => {
+    it('renders the hover overlay with title when not disabled', () => {
       render(<VideoCard {...defaultProps} />);
 
-      expect(screen.queryByRole('button', { name: 'Chiudi' })).not.toBeInTheDocument();
+      expect(screen.getByText('My Video')).toBeInTheDocument();
+    });
+
+    it('does not render the hover overlay when disabled', () => {
+      render(<VideoCard {...defaultProps} disabled />);
+
+      expect(screen.queryByText('My Video')).not.toBeInTheDocument();
     });
   });
 
-  describe('dialog content', () => {
-    it('shows the title after opening the dialog', async () => {
-      render(<VideoCard {...defaultProps} />);
-      openDialog();
+  describe('interaction', () => {
+    it('calls onOpen when clicked with a valid video', () => {
+      const onOpen = vi.fn();
+      render(<VideoCard {...defaultProps} onOpen={onOpen} />);
 
-      await waitFor(() => {
-        expect(screen.getByText('Title: My Video')).toBeInTheDocument();
-      });
+      fireEvent.click(screen.getByRole('img', { name: 'Test thumbnail' }));
+
+      expect(onOpen).toHaveBeenCalledTimes(1);
     });
 
-    it('shows the starring field after opening the dialog', async () => {
-      render(<VideoCard {...defaultProps} />);
-      openDialog();
+    it('does not call onOpen when disabled', () => {
+      const onOpen = vi.fn();
+      render(<VideoCard {...defaultProps} disabled onOpen={onOpen} />);
 
-      await waitFor(() => {
-        expect(screen.getByText('Starring: Actor One')).toBeInTheDocument();
-      });
+      fireEvent.click(screen.getByRole('img', { name: 'Test thumbnail' }));
+
+      expect(onOpen).not.toHaveBeenCalled();
     });
 
-    it('shows the client field after opening the dialog', async () => {
-      render(<VideoCard {...defaultProps} />);
-      openDialog();
-
-      await waitFor(() => {
-        expect(screen.getByText('Client: Brand X')).toBeInTheDocument();
-      });
-    });
-
-    it('shows the production field after opening the dialog', async () => {
-      render(<VideoCard {...defaultProps} />);
-      openDialog();
-
-      await waitFor(() => {
-        expect(screen.getByText('Production: Studio Y')).toBeInTheDocument();
-      });
-    });
-
-    it('shows the Chiudi close button after opening the dialog', async () => {
-      render(<VideoCard {...defaultProps} />);
-      openDialog();
-
-      await waitFor(() => {
-        expect(screen.getByRole('button', { name: 'Chiudi' })).toBeInTheDocument();
-      });
-    });
-
-    it('renders the video iframe when videoUrl.html is provided', async () => {
-      render(<VideoCard {...defaultProps} />);
-      openDialog();
-
-      await waitFor(() => {
-        expect(document.querySelector('iframe')).toBeInTheDocument();
-      });
-    });
-
-    it('sets the dialog to closed state after clicking Chiudi', async () => {
-      render(<VideoCard {...defaultProps} />);
-      openDialog();
-
-      await waitFor(() => {
-        expect(screen.getByRole('button', { name: 'Chiudi' })).toBeInTheDocument();
-      });
-
-      fireEvent.click(screen.getByRole('button', { name: 'Chiudi' }));
-
-      await waitFor(() => {
-        const content = document.querySelector('[data-part="content"][data-scope="dialog"]');
-        expect(content).toHaveAttribute('data-state', 'closed');
-      });
-    });
-  });
-
-  describe('conditional rendering', () => {
-    it('does not render the title element when title is empty', () => {
-      render(<VideoCard {...defaultProps} title="" />);
-      openDialog();
-
-      expect(screen.queryByText(/^Title:/)).not.toBeInTheDocument();
-    });
-
-    it('does not render the starring element when starring is empty', () => {
-      render(<VideoCard {...defaultProps} starring="" />);
-      openDialog();
-
-      expect(screen.queryByText(/^Starring:/)).not.toBeInTheDocument();
-    });
-
-    it('does not render the client element when client is empty', () => {
-      render(<VideoCard {...defaultProps} client="" />);
-      openDialog();
-
-      expect(screen.queryByText(/^Client:/)).not.toBeInTheDocument();
-    });
-
-    it('does not render the production element when production is empty', () => {
-      render(<VideoCard {...defaultProps} production="" />);
-      openDialog();
-
-      expect(screen.queryByText(/^Production:/)).not.toBeInTheDocument();
-    });
-
-    it('does not render the video div when videoUrl.html is null', () => {
+    it('does not call onOpen when videoUrl.html is null', () => {
+      const onOpen = vi.fn();
       const noVideo = { html: null } as EmbedField;
-      render(<VideoCard {...defaultProps} videoUrl={noVideo} />);
-      openDialog();
+      render(<VideoCard {...defaultProps} videoUrl={noVideo} onOpen={onOpen} />);
 
-      expect(document.querySelector('iframe')).not.toBeInTheDocument();
+      fireEvent.click(screen.getByRole('img', { name: 'Test thumbnail' }));
+
+      expect(onOpen).not.toHaveBeenCalled();
+    });
+
+    it('does not throw when onOpen is not provided', () => {
+      render(<VideoCard {...defaultProps} />);
+
+      expect(() =>
+        fireEvent.click(screen.getByRole('img', { name: 'Test thumbnail' })),
+      ).not.toThrow();
     });
   });
 });

@@ -18,9 +18,21 @@ export const typography = defineTextStyles({
     },
   },
 
+  body: {
+    value: {
+      fontSize: {
+        base: '1.4rem',
+        md: '1.6rem',
+      },
+    },
+  },
+
   bodyLarge: {
     value: {
-      fontSize: { base: '1.6rem', md: '2rem' },
+      fontSize: {
+        base: '1.6rem',
+        md: '2rem',
+      },
     },
   },
 });
