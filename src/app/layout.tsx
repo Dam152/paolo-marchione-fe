@@ -3,7 +3,6 @@ import './globals.css';
 import { env } from '@/config/env';
 import localFont from 'next/font/local';
 import { Header } from '@/components/organisms/Header';
-import { AosProvider } from '@/provider/AosProvider';
 import { FullscreenGlobalResize } from '@/components/FullScreenGlobalResize';
 import { createClient } from '@/prismicio';
 
@@ -34,8 +33,7 @@ export default async function RootLayout({
       <body>
         <Header />
         <main>{children}</main>
-        <AosProvider />
-        <FullscreenGlobalResize />
+<FullscreenGlobalResize />
       </body>
     </html>
   );

@@ -17,10 +17,12 @@ const dimmable = css({
   display: 'flex',
   flexDirection: 'column',
   transition: 'opacity 0.5s ease',
+  animation: 'fadeIn 0.6s ease backwards',
 });
 
 export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   function handleCategoryClick(id: string) {
     setActiveId((prev) => {
@@ -39,13 +41,12 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
   }, []);
 
   let videoIndex = 0;
+  let itemIndex = 0;
 
   return (
     <>
       {/* Mobile filter tags */}
       <ToggleGroup.Root
-        suppressHydrationWarning
-        data-aos="fade-up"
         multiple={false}
         value={activeId ? [activeId] : []}
         onValueChange={({ value }) => {
@@ -60,6 +61,7 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
           w: '100%',
           gridColumn: '1 / -1',
           mb: '24px',
+          animation: 'fadeIn 0.6s ease backwards',
         })}
       >
         {categories.map((category) => (
@@ -85,22 +87,31 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
       </ToggleGroup.Root>
 
       {categories.map((category) => {
-        const dimmed = activeId !== null && activeId !== category.id;
+        const focusId = activeId ?? hoveredId;
+        const dimmed = focusId !== null && focusId !== category.id;
         const opacity = dimmed ? 0.2 : 1;
+        const cardDelay = itemIndex++;
 
         return (
           <Fragment key={category.id}>
             <CategoryCard
               title={category.data.title}
               className={dimmable}
-              style={{ opacity }}
+              style={{ opacity, animationDelay: `${cardDelay * 0.06}s` }}
               onClick={() => handleCategoryClick(category.id)}
+              onMouseEnter={() => setHoveredId(category.id)}
+              onMouseLeave={() => setHoveredId(null)}
               isActive={activeId === category.id}
             />
             {category.data.video.map((item, index) => {
               const isPreload = videoIndex++ < preloadCount;
+              const videoDelay = itemIndex++;
               return (
-                <div key={item.image.id || index} className={dimmable} style={{ opacity }}>
+                <div
+                  key={item.image.id || index}
+                  className={dimmable}
+                  style={{ opacity, animationDelay: `${videoDelay * 0.06}s` }}
+                >
                   <VideoCard
                     image={item.image}
                     videoUrl={item.video}

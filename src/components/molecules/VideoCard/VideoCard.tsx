@@ -29,13 +29,13 @@ const styles = {
     aspectRatio: '1/1',
     overflow: 'hidden',
     _hover: {
-      '& [data-overlay]': { opacity: 1 },
+      '& [data-overlay]': { opacity: 0.7 },
     },
   }),
   overlay: css({
     position: 'absolute',
     inset: 0,
-    bg: 'Black',
+    bg: '#2B2B2B',
     opacity: 0,
     transition: 'opacity 0.3s ease',
     display: 'flex',
@@ -165,7 +165,7 @@ export function VideoCard({
     }
   }
 
-  const hasVideo = !disabled && !!videoUrl?.html;
+  const hasVideo = !!videoUrl?.html;
 
   const cardContent = (
     <>
@@ -189,7 +189,7 @@ export function VideoCard({
 
   if (!hasVideo) {
     return (
-      <div data-aos="fade-up" className={styles.triggerWrapper}>
+      <div className={styles.triggerWrapper}>
         {cardContent}
       </div>
     );
@@ -197,7 +197,7 @@ export function VideoCard({
 
   return (
     <Dialog.Root lazyMount preventScroll onOpenChange={handleOpenChange}>
-      <Dialog.Trigger data-aos="fade-up" suppressHydrationWarning className={styles.triggerWrapper}>
+      <Dialog.Trigger disabled={disabled} className={styles.triggerWrapper}>
         {cardContent}
       </Dialog.Trigger>
 

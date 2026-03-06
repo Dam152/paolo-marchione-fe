@@ -9,6 +9,8 @@ type CategoryCardProps = {
   className?: string;
   style?: CSSProperties;
   onClick?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
   isActive?: boolean;
 };
 
@@ -17,11 +19,14 @@ export function CategoryCard({
   className = '',
   style,
   onClick,
+  onMouseEnter,
+  onMouseLeave,
   isActive = false,
 }: CategoryCardProps) {
   return (
     <div
-      data-aos="fade-up"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       className={cx(
         className,
         css({
@@ -30,6 +35,7 @@ export function CategoryCard({
             base: 'none',
             md: 'block',
           },
+          animation: 'fadeIn 0.6s ease backwards',
         }),
       )}
       style={style}
@@ -45,12 +51,12 @@ export function CategoryCard({
           css({
             w: '100%',
             aspectRatio: '1/1',
-            bg: isActive ? 'Black' : 'Gray',
-
-            transition: 'background-color 0.3s ease, opacity 0.5s ease',
+            bg: isActive ? '#191919' : 'Gray',
+            transition: 'background-color 0.3s ease, color 0.3s ease',
             ...(!isActive && {
               _hover: {
-                opacity: 0.6,
+                bg: '#191919',
+                color: 'White',
               },
             }),
           }),
