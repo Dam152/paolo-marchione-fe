@@ -38,14 +38,13 @@ const styles = {
     zIndex: 61,
     display: 'flex',
     alignItems: 'center',
-    pointerEvents: 'none',
+    pointerEvents: 'auto',
   }),
   content: css({
     w: '100%',
     px: '16px',
     display: 'flex',
     flexDirection: 'column',
-    pointerEvents: 'auto',
     md: { px: '24px', maxW: 'min(1640px, calc(100% - 48px))', mx: 'auto' },
     lg: { px: '32px', maxW: 'min(1640px, calc(100% - 64px))' },
     '2xl': { px: '48px', maxW: 'min(1640px, calc(100% - 96px))' },
@@ -60,22 +59,20 @@ const styles = {
     overflow: 'hidden',
     '& iframe': { w: '100%', h: '100%', display: 'block' },
   }),
-  infoRow: css({
+  metaRow: css({
     w: '100%',
     mx: 'auto',
     md: { maxWidth: '1024px' },
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gap: '16px',
+    mt: '16px',
+  }),
+  infoRow: css({
     display: 'flex',
     flexDirection: 'column',
     gap: '4px',
-    mt: '16px',
-  }),
-  bottomRow: css({
-    w: '100%',
-    mx: 'auto',
-    md: { maxWidth: '1024px' },
-    display: 'flex',
-    justifyContent: 'flex-end',
-    mt: '6px',
   }),
   closeBtn: css({
     display: 'flex',
@@ -136,8 +133,18 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
       <Portal>
         <Dialog.Backdrop className={styles.backdrop} />
 
-        <Dialog.Positioner className={styles.positioner}>
-          <Dialog.Content className={styles.content}>
+        <Dialog.Positioner
+          className={styles.positioner}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) onClose();
+          }}
+        >
+          <Dialog.Content
+            className={styles.content}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) onClose();
+            }}
+          >
             <button
               className={cx(
                 styles.navBtn,
@@ -171,38 +178,37 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
             )}
 
             {video && (
-              <div className={styles.infoRow}>
-                {video.title && (
-                  <Text as="span" textColor="White" fontSize="body">
-                    Title: {video.title}
+              <div className={styles.metaRow}>
+                <div className={styles.infoRow}>
+                  {video.title && (
+                    <Text as="span" textColor="White" fontSize="body">
+                      Title: {video.title}
+                    </Text>
+                  )}
+                  {video.starring && (
+                    <Text as="span" textColor="White" fontSize="body">
+                      Starring: {video.starring}
+                    </Text>
+                  )}
+                  {video.client && (
+                    <Text as="span" textColor="White" fontSize="body">
+                      Client: {video.client}
+                    </Text>
+                  )}
+                  {video.production && (
+                    <Text as="span" textColor="White" fontSize="body">
+                      Production: {video.production}
+                    </Text>
+                  )}
+                </div>
+                <Dialog.CloseTrigger className={styles.closeBtn}>
+                  {/* <X size={14} strokeWidth={1.5} color="white" /> */}
+                  <Text as="span" textColor="White" fontSize="bodyLarge">
+                    Close
                   </Text>
-                )}
-                {video.starring && (
-                  <Text as="span" textColor="White" fontSize="body">
-                    Starring: {video.starring}
-                  </Text>
-                )}
-                {video.client && (
-                  <Text as="span" textColor="White" fontSize="body">
-                    Client: {video.client}
-                  </Text>
-                )}
-                {video.production && (
-                  <Text as="span" textColor="White" fontSize="body">
-                    Production: {video.production}
-                  </Text>
-                )}
+                </Dialog.CloseTrigger>
               </div>
             )}
-
-            <div className={styles.bottomRow}>
-              <Dialog.CloseTrigger className={styles.closeBtn}>
-                <X size={14} strokeWidth={1.5} color="white" />
-                <Text as="span" textColor="White" fontSize="bodyLarge">
-                  Close
-                </Text>
-              </Dialog.CloseTrigger>
-            </div>
           </Dialog.Content>
         </Dialog.Positioner>
       </Portal>
