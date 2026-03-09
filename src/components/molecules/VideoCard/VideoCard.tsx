@@ -43,7 +43,14 @@ const styles = {
   }),
 };
 
-export function VideoCard({ title, videoUrl, image, preload, disabled = false, onOpen }: VideoCardProps) {
+export function VideoCard({
+  title,
+  videoUrl,
+  image,
+  preload,
+  disabled = false,
+  onOpen,
+}: VideoCardProps) {
   const hasVideo = !!videoUrl?.html;
 
   function handleClick() {
@@ -55,12 +62,12 @@ export function VideoCard({ title, videoUrl, image, preload, disabled = false, o
       <NextImage
         alt={image.alt || String(title || 'Guarda video')}
         src={image.url!}
-        sizes="410px"
+        sizes="820px"
         lazy={!preload}
         preload={preload}
         className={styles.image}
-        width={410}
-        height={410}
+        width={820}
+        height={820}
       />
       {!disabled && (
         <div data-overlay aria-hidden="true" className={styles.overlay}>
