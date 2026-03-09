@@ -3,7 +3,7 @@
 import { Dialog } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
 import { EmbedField, KeyTextField } from '@prismicio/client';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { css, cx } from '../../../../panda/css';
 import { Text } from '@/components/atoms/Text';
 
@@ -62,12 +62,17 @@ const styles = {
   metaRow: css({
     w: '100%',
     mx: 'auto',
-    md: { maxWidth: '1024px' },
     display: 'flex',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
     alignItems: 'flex-start',
     gap: '16px',
     mt: '16px',
+    md: {
+      maxWidth: '1024px',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+    },
   }),
   infoRow: css({
     display: 'flex',
@@ -83,6 +88,8 @@ const styles = {
     border: 'none',
     p: 0,
     transition: 'opacity 0.2s',
+    alignSelf: 'flex-end',
+    md: { alignSelf: 'flex-start' },
     _hover: { opacity: 0.6 },
   }),
   // frecce laterali — solo desktop
@@ -202,8 +209,7 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
                   )}
                 </div>
                 <Dialog.CloseTrigger className={styles.closeBtn}>
-                  {/* <X size={14} strokeWidth={1.5} color="white" /> */}
-                  <Text as="span" textColor="White" fontSize="bodyLarge">
+                  <Text as="span" textColor="White" fontSize="body">
                     Close
                   </Text>
                 </Dialog.CloseTrigger>
