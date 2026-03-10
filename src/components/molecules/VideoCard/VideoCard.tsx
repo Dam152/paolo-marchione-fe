@@ -2,6 +2,7 @@
 
 import { NextImage } from '@/components/atoms/NextImage';
 import { EmbedField, ImageField, KeyTextField } from '@prismicio/client';
+import { useRef, useState } from 'react';
 import { css } from '../../../../panda/css';
 import { text } from '../../../../panda/recipes';
 
@@ -37,6 +38,9 @@ const styles = {
     p: '16px',
     pointerEvents: 'none',
   }),
+  overlayRevealed: css({
+    opacity: 0.7,
+  }),
   image: css({
     w: '100%',
     aspectRatio: '1/1',
@@ -52,13 +56,40 @@ export function VideoCard({
   onOpen,
 }: VideoCardProps) {
   const hasVideo = !!videoUrl?.html;
+  const [revealed, setRevealed] = useState(false);
+  const isTouchRef = useRef(false);
+
+  function handleTouchStart() {
+    isTouchRef.current = true;
+  }
 
   function handleClick() {
-    if (!disabled && hasVideo && onOpen) onOpen();
+    if (disabled || !hasVideo) return;
+
+    if (isTouchRef.current) {
+      isTouchRef.current = false;
+      if (!revealed) {
+        setRevealed(true);
+        return;
+      }
+      setRevealed(false);
+    }
+
+    onOpen?.();
+  }
+
+  function handleBlur() {
+    setRevealed(false);
   }
 
   return (
-    <div className={styles.triggerWrapper} onClick={handleClick}>
+    <div
+      className={styles.triggerWrapper}
+      onClick={handleClick}
+      onTouchStart={handleTouchStart}
+      onBlur={handleBlur}
+      tabIndex={0}
+    >
       <NextImage
         alt={image.alt || String(title || 'Guarda video')}
         src={image.url!}
@@ -70,7 +101,11 @@ export function VideoCard({
         height={820}
       />
       {!disabled && (
-        <div data-overlay aria-hidden="true" className={styles.overlay}>
+        <div
+          data-overlay
+          aria-hidden="true"
+          className={`${styles.overlay}${revealed ? ` ${styles.overlayRevealed}` : ''}`}
+        >
           <span className={text({ fontSize: 'bodyLarge', textColor: 'White' })}>{title}</span>
         </div>
       )}

@@ -63,7 +63,9 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
   }
 
   useEffect(() => {
-    function handleWindowClick() { setActiveId(null); }
+    function handleWindowClick() {
+      if (!isLightboxOpenRef.current) setActiveId(null);
+    }
     window.addEventListener('click', handleWindowClick);
     return () => window.removeEventListener('click', handleWindowClick);
   }, []);
@@ -82,6 +84,9 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
     ),
     [categories]
   );
+
+  const isLightboxOpenRef = useRef(false);
+  useEffect(() => { isLightboxOpenRef.current = openIndex !== null; }, [openIndex]);
 
   const handleClose = useCallback(() => setOpenIndex(null), []);
   const handlePrev = useCallback(() => setOpenIndex((i) => (i !== null && i > 0 ? i - 1 : i)), []);

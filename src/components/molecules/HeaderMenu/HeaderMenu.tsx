@@ -85,6 +85,7 @@ const styles = {
 
 export function HeaderMenu({ items, appName }: HeaderMenuProps) {
   const [activeLabel, setActiveLabel] = useState<string | null>(null);
+  const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const activeItem = items.find((i) => i.label === activeLabel);
@@ -133,9 +134,15 @@ export function HeaderMenu({ items, appName }: HeaderMenuProps) {
                 styles.navButton,
                 text({
                   fontSize: 'bodyLarge',
-                  textColor: isOpen && item.label !== activeLabel ? 'Gray' : 'Black',
+                  textColor:
+                    (isOpen && item.label !== activeLabel) ||
+                    (hoveredLabel !== null && item.label === hoveredLabel)
+                      ? 'Gray'
+                      : 'Black',
                 }),
               )}
+              onMouseEnter={() => setHoveredLabel(item.label)}
+              onMouseLeave={() => setHoveredLabel(null)}
               onClick={(e) => {
                 e.stopPropagation();
                 const next = activeLabel === item.label ? null : item.label;
