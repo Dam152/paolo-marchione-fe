@@ -9,6 +9,8 @@ import { createClient } from '@/prismicio';
 const neueMonteral = localFont({
   src: '../../public/Neue Montreal/NeueMontreal-Regular.otf',
   variable: '--font-neue-monteral',
+  display: 'swap',
+  preload: true,
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -33,7 +35,7 @@ export default async function RootLayout({
       <body>
         <Header />
         <main>{children}</main>
-<FullscreenGlobalResize />
+        <FullscreenGlobalResize />
       </body>
     </html>
   );

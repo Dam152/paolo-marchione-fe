@@ -176,7 +176,7 @@ export function CustomDrawer({ isOpen, onClose, items, appName }: CustomDrawerPr
 
               <DialogCloseTrigger asChild>
                 <Button aria-label="Chiudi menu" className={styles.closeButton}>
-                  <X size={24} aria-hidden="true" />
+                  <X size={24} strokeWidth={1} aria-hidden="true" />
                 </Button>
               </DialogCloseTrigger>
             </div>
@@ -200,7 +200,7 @@ export function CustomDrawer({ isOpen, onClose, items, appName }: CustomDrawerPr
                       {item.label}
                       <AccordionItemIndicator asChild>
                         <span className={styles.accordionIndicator}>
-                          <ChevronDown size={20} aria-hidden="true" />
+                          <ChevronDown size={20} strokeWidth={1} aria-hidden="true" />
                         </span>
                       </AccordionItemIndicator>
                     </Button>

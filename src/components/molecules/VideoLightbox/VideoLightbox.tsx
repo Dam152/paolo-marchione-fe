@@ -3,8 +3,9 @@
 import { Dialog } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
 import { EmbedField, KeyTextField } from '@prismicio/client';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { css, cx } from '../../../../panda/css';
+import { Button } from '@/components/atoms/Button';
 import { Text } from '@/components/atoms/Text';
 
 export type VideoItem = {
@@ -28,7 +29,7 @@ const styles = {
     position: 'fixed',
     inset: 0,
     zIndex: 60,
-    bg: 'rgba(0,0,0,0.88)',
+    bg: '#191919',
     _open: { animation: 'fadeIn 0.25s ease' },
     _closed: { animation: 'fadeOut 0.2s ease' },
   }),
@@ -54,7 +55,7 @@ const styles = {
   videoWrapper: css({
     w: '100%',
     mx: 'auto',
-    md: { maxWidth: '1024px' },
+    md: { maxWidth: '1230px' },
     aspectRatio: '16/9',
     overflow: 'hidden',
     '& iframe': { w: '100%', h: '100%', display: 'block' },
@@ -66,9 +67,9 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'flex-start',
     gap: '16px',
-    mt: '16px',
+    mt: '32px',
     md: {
-      maxWidth: '1024px',
+      maxWidth: '1230px',
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
@@ -79,8 +80,23 @@ const styles = {
     flexDirection: 'column',
     gap: '4px',
   }),
-  closeBtn: css({
+  closeBtnMobile: css({
     display: 'flex',
+    position: 'fixed',
+    top: '16px',
+    right: '16px',
+    zIndex: 62,
+    cursor: 'pointer',
+    bg: 'transparent',
+    border: 'none',
+    p: 0,
+    color: 'token(colors.Gray)',
+    transition: 'opacity 0.2s',
+    _hover: { opacity: 0.6 },
+    md: { display: 'none' },
+  }),
+  closeBtnDesktop: css({
+    display: 'none',
     alignItems: 'center',
     gap: '6px',
     cursor: 'pointer',
@@ -88,9 +104,8 @@ const styles = {
     border: 'none',
     p: 0,
     transition: 'opacity 0.2s',
-    alignSelf: 'flex-end',
-    md: { alignSelf: 'flex-start' },
     _hover: { opacity: 0.6 },
+    md: { display: 'flex', alignSelf: 'flex-start' },
   }),
   // frecce laterali — solo desktop
   navBtn: css({
@@ -152,7 +167,7 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
               if (e.target === e.currentTarget) onClose();
             }}
           >
-            <button
+            <Button
               className={cx(
                 styles.navBtn,
                 styles.prevBtn,
@@ -162,9 +177,9 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
               disabled={isPrevDisabled}
               aria-label="Video precedente"
             >
-              <ChevronLeft size={32} strokeWidth={1.5} />
-            </button>
-            <button
+              <ChevronLeft size={32} strokeWidth={1} />
+            </Button>
+            <Button
               className={cx(
                 styles.navBtn,
                 styles.nextBtn,
@@ -174,8 +189,16 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
               disabled={isNextDisabled}
               aria-label="Video successivo"
             >
-              <ChevronRight size={32} strokeWidth={1.5} />
-            </button>
+              <ChevronRight size={32} strokeWidth={1} />
+            </Button>
+
+            {video && (
+              <Dialog.CloseTrigger asChild>
+                <Button className={styles.closeBtnMobile} aria-label="Chiudi">
+                  <X size={24} strokeWidth={1} aria-hidden="true" />
+                </Button>
+              </Dialog.CloseTrigger>
+            )}
 
             {video?.videoUrl?.html && (
               <div
@@ -188,30 +211,32 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
               <div className={styles.metaRow}>
                 <div className={styles.infoRow}>
                   {video.title && (
-                    <Text as="span" textColor="White" fontSize="body">
+                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
                       Title: {video.title}
                     </Text>
                   )}
                   {video.starring && (
-                    <Text as="span" textColor="White" fontSize="body">
+                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
                       Starring: {video.starring}
                     </Text>
                   )}
                   {video.client && (
-                    <Text as="span" textColor="White" fontSize="body">
+                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
                       Client: {video.client}
                     </Text>
                   )}
                   {video.production && (
-                    <Text as="span" textColor="White" fontSize="body">
+                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
                       Production: {video.production}
                     </Text>
                   )}
                 </div>
-                <Dialog.CloseTrigger className={styles.closeBtn}>
-                  <Text as="span" textColor="White" fontSize="body">
-                    Close
-                  </Text>
+                <Dialog.CloseTrigger asChild>
+                  <Button className={styles.closeBtnDesktop} aria-label="Chiudi">
+                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
+                      Close
+                    </Text>
+                  </Button>
                 </Dialog.CloseTrigger>
               </div>
             )}

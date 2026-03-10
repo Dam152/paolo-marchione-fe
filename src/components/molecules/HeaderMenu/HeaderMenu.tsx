@@ -163,7 +163,7 @@ export function HeaderMenu({ items, appName }: HeaderMenuProps) {
           className={styles.hamburger}
           onClick={() => setIsDrawerOpen(true)}
         >
-          <Menu size={24} aria-hidden="true" />
+          <Menu size={24} strokeWidth={1} aria-hidden="true" />
         </Button>
       </div>
 
