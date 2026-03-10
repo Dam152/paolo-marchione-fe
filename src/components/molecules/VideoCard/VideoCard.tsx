@@ -93,12 +93,12 @@ export function VideoCard({
       <NextImage
         alt={image.alt || String(title || 'Guarda video')}
         src={image.url!}
-        sizes="820px"
+        sizes="1230px"
         lazy={!preload}
         preload={preload}
         className={styles.image}
-        width={820}
-        height={820}
+        width={image.dimensions?.width}
+        height={image.dimensions?.height}
       />
       {!disabled && (
         <div
