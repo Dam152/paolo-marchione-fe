@@ -46,6 +46,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     pointerEvents: 'auto',
+    _closed: { pointerEvents: 'none' },
   }),
   content: css({
     w: '100%',

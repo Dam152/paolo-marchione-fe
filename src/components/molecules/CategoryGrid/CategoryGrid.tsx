@@ -48,6 +48,8 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
   const [isDesktop, setIsDesktop] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const mountedIds = useRef<Set<string>>(new Set());
+  const activeIdBeforeLightbox = useRef<string | null>(null);
+  const skipNextWindowClick = useRef(false);
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 768px)');
@@ -58,22 +60,22 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
   }, []);
 
   function handleCategoryClick(id: string) {
-    if (lightboxJustClosed.current) return;
     setActiveId((prev) => (prev === id ? null : id));
     mountedIds.current.add(id);
   }
 
   useEffect(() => {
+    if (openIndex !== null) return;
     function handleWindowClick() {
-      if (lightboxJustClosed.current) {
-        lightboxJustClosed.current = false;
+      if (skipNextWindowClick.current) {
+        skipNextWindowClick.current = false;
         return;
       }
-      if (!isLightboxOpenRef.current) setActiveId(null);
+      setActiveId(null);
     }
     window.addEventListener('click', handleWindowClick);
     return () => window.removeEventListener('click', handleWindowClick);
-  }, []);
+  }, [openIndex]);
 
   const playableVideos = useMemo<VideoItem[]>(() =>
     categories.flatMap((cat) =>
@@ -90,13 +92,10 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
     [categories]
   );
 
-  const isLightboxOpenRef = useRef(false);
-  const lightboxJustClosed = useRef(false);
-  useEffect(() => { isLightboxOpenRef.current = openIndex !== null; }, [openIndex]);
-
   const handleClose = useCallback(() => {
-    lightboxJustClosed.current = true;
+    skipNextWindowClick.current = true;
     setOpenIndex(null);
+    setActiveId(activeIdBeforeLightbox.current);
   }, []);
   const handlePrev = useCallback(() => setOpenIndex((i) => (i !== null && i > 0 ? i - 1 : i)), []);
   const handleNext = useCallback(() => setOpenIndex((i) => (i !== null && i < playableVideos.length - 1 ? i + 1 : i)), [playableVideos.length]);
@@ -153,7 +152,10 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
                         title={item.title}
                         preload={isPreload}
                         disabled={dimmed}
-                        onOpen={currentPlayableIndex >= 0 ? () => setOpenIndex(currentPlayableIndex) : undefined}
+                        onOpen={currentPlayableIndex >= 0 ? () => {
+                          activeIdBeforeLightbox.current = activeId;
+                          setOpenIndex(currentPlayableIndex);
+                        } : undefined}
                       />
                     </div>
                   );
