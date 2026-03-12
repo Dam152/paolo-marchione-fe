@@ -57,7 +57,7 @@ export function CategoryCard({
             py: '20px',
             bg: 'Gray',
             transition: 'background-color 0.3s ease, color 0.3s ease',
-            md: {
+            tab: {
               display: 'block',
               aspectRatio: '1/1',
               px: '0',

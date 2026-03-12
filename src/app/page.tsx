@@ -23,12 +23,12 @@ export default async function Home() {
             display: 'grid',
             gridTemplateColumns: {
               base: 'repeat(1, 1fr)',
-              md: 'repeat(2, 1fr)',
+              tab: 'repeat(2, 1fr)',
               lg: 'repeat(4, 1fr)',
             },
             pb: {
               base: '16px',
-              md: '270px',
+              tab: '270px',
             },
           }),
         )}

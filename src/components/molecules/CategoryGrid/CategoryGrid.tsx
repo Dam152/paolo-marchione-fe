@@ -17,7 +17,7 @@ const dimmable = css({
   display: 'flex',
   flexDirection: 'column',
   transition: 'opacity 0.5s ease',
-  md: {
+  tab: {
     '&[data-dimmed="true"]': { opacity: 0.2 },
   },
 });
@@ -25,7 +25,7 @@ const dimmable = css({
 const videoWrapper = css({
   animation: 'fadeIn 0.4s ease backwards',
   animationDelay: 'var(--mobile-delay, 0s)',
-  md: {
+  tab: {
     animation: 'fadeIn 0.6s ease backwards',
     animationDelay: 'var(--video-delay, 0s)',
   },
@@ -33,13 +33,13 @@ const videoWrapper = css({
 
 const categoryWrapper = css({
   gridColumn: '1 / -1',
-  md: { display: 'contents' },
+  tab: { display: 'contents' },
 });
 
 const videosCollapsible = css({
   overflow: 'hidden',
   transition: 'max-height 0.35s ease',
-  md: { display: 'contents', overflow: 'visible' },
+  tab: { display: 'contents', overflow: 'visible' },
 });
 
 export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps) {
@@ -52,7 +52,7 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
   const skipNextWindowClick = useRef(false);
 
   useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)');
+    const mq = window.matchMedia('(min-width: 640px)');
     setIsDesktop(mq.matches);
     const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
     mq.addEventListener('change', handler);
@@ -77,19 +77,20 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
     return () => window.removeEventListener('click', handleWindowClick);
   }, [openIndex]);
 
-  const playableVideos = useMemo<VideoItem[]>(() =>
-    categories.flatMap((cat) =>
-      cat.data.video
-        .filter((item) => !!item.video?.html)
-        .map((item) => ({
-          title: item.title,
-          starring: item.starring,
-          client: item.client,
-          production: item.production,
-          videoUrl: item.video,
-        }))
-    ),
-    [categories]
+  const playableVideos = useMemo<VideoItem[]>(
+    () =>
+      categories.flatMap((cat) =>
+        cat.data.video
+          .filter((item) => !!item.video?.html)
+          .map((item) => ({
+            title: item.title,
+            starring: item.starring,
+            client: item.client,
+            production: item.production,
+            videoUrl: item.video,
+          })),
+      ),
+    [categories],
   );
 
   const handleClose = useCallback(() => {
@@ -98,7 +99,10 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
     setActiveId(activeIdBeforeLightbox.current);
   }, []);
   const handlePrev = useCallback(() => setOpenIndex((i) => (i !== null && i > 0 ? i - 1 : i)), []);
-  const handleNext = useCallback(() => setOpenIndex((i) => (i !== null && i < playableVideos.length - 1 ? i + 1 : i)), [playableVideos.length]);
+  const handleNext = useCallback(
+    () => setOpenIndex((i) => (i !== null && i < playableVideos.length - 1 ? i + 1 : i)),
+    [playableVideos.length],
+  );
 
   let videoIndex = 0;
   let playableIndex = 0;
@@ -141,10 +145,12 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
                       key={item.image.id || index}
                       className={`${dimmable} ${videoWrapper}`}
                       data-dimmed={dimmed || undefined}
-                      style={{
-                        '--video-delay': `${videoDelay * 0.06}s`,
-                        '--mobile-delay': `${index * 0.05}s`,
-                      } as React.CSSProperties}
+                      style={
+                        {
+                          '--video-delay': `${videoDelay * 0.06}s`,
+                          '--mobile-delay': `${index * 0.05}s`,
+                        } as React.CSSProperties
+                      }
                     >
                       <VideoCard
                         image={item.image}
@@ -152,10 +158,14 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
                         title={item.title}
                         preload={isPreload}
                         disabled={dimmed}
-                        onOpen={currentPlayableIndex >= 0 ? () => {
-                          activeIdBeforeLightbox.current = activeId;
-                          setOpenIndex(currentPlayableIndex);
-                        } : undefined}
+                        onOpen={
+                          currentPlayableIndex >= 0
+                            ? () => {
+                                activeIdBeforeLightbox.current = activeId;
+                                setOpenIndex(currentPlayableIndex);
+                              }
+                            : undefined
+                        }
                       />
                     </div>
                   );
