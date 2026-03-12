@@ -62,7 +62,9 @@ const styles = {
   videoWrapper: css({
     w: '100%',
     mx: 'auto',
-    md: { maxWidth: '1088px' },
+    md: { maxWidth: '840px' },
+    xl: { maxWidth: '960px' },
+    '2xl': { maxWidth: '1088px' },
     aspectRatio: '1088/611',
     overflow: 'hidden',
     '& iframe': { w: '100%', h: '100%', display: 'block' },
@@ -76,6 +78,18 @@ const styles = {
     gap: '16px',
     mt: '32px',
     md: {
+      maxWidth: '840px',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+    },
+    xl: {
+      maxWidth: '960px',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+    },
+    '2xl': {
       maxWidth: '1088px',
       flexDirection: 'row',
       justifyContent: 'space-between',
