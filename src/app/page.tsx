@@ -26,7 +26,10 @@ export default async function Home() {
               md: 'repeat(2, 1fr)',
               lg: 'repeat(4, 1fr)',
             },
-            pb: '138px',
+            pb: {
+              base: '16px',
+              md: '270px',
+            },
           }),
         )}
       >

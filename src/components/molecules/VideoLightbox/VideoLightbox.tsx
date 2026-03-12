@@ -27,7 +27,10 @@ type VideoLightboxProps = {
 const styles = {
   backdrop: css({
     position: 'fixed',
-    inset: 0,
+    top: 0,
+    left: 0,
+    right: 0,
+    h: 'var(--root-height, 100dvh)',
     zIndex: 60,
     bg: '#191919',
     _open: { animation: 'fadeIn 0.25s ease' },
@@ -35,7 +38,10 @@ const styles = {
   }),
   positioner: css({
     position: 'fixed',
-    inset: 0,
+    top: 0,
+    left: 0,
+    right: 0,
+    h: 'var(--root-height, 100dvh)',
     zIndex: 61,
     display: 'flex',
     alignItems: 'center',
@@ -46,17 +52,17 @@ const styles = {
     px: '16px',
     display: 'flex',
     flexDirection: 'column',
-    md: { px: '24px', maxW: 'min(1640px, calc(100% - 48px))', mx: 'auto' },
-    lg: { px: '32px', maxW: 'min(1640px, calc(100% - 64px))' },
-    '2xl': { px: '48px', maxW: 'min(1640px, calc(100% - 96px))' },
+    md: { px: '24px', maxW: 'min(1360px, calc(100% - 48px))', mx: 'auto' },
+    lg: { px: '32px', maxW: 'min(1360px, calc(100% - 64px))' },
+    '2xl': { px: '48px', maxW: 'min(1360px, calc(100% - 96px))' },
     _open: { animation: 'fadeIn 0.3s ease' },
     _closed: { animation: 'fadeOut 0.2s ease' },
   }),
   videoWrapper: css({
     w: '100%',
     mx: 'auto',
-    md: { maxWidth: '1230px' },
-    aspectRatio: '16/9',
+    md: { maxWidth: '1088px' },
+    aspectRatio: '1088/611',
     overflow: 'hidden',
     '& iframe': { w: '100%', h: '100%', display: 'block' },
   }),
@@ -69,7 +75,7 @@ const styles = {
     gap: '16px',
     mt: '32px',
     md: {
-      maxWidth: '1230px',
+      maxWidth: '1088px',
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
@@ -82,10 +88,8 @@ const styles = {
   }),
   closeBtnMobile: css({
     display: 'flex',
-    position: 'fixed',
-    top: '16px',
-    right: '16px',
-    zIndex: 62,
+    alignSelf: 'flex-end',
+    mb: '12px',
     cursor: 'pointer',
     bg: 'transparent',
     border: 'none',
@@ -211,29 +215,29 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
               <div className={styles.metaRow}>
                 <div className={styles.infoRow}>
                   {video.title && (
-                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
+                    <Text as="span" textColor="Gray" fontSize="body">
                       Title: {video.title}
                     </Text>
                   )}
                   {video.starring && (
-                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
+                    <Text as="span" textColor="Gray" fontSize="body">
                       Starring: {video.starring}
                     </Text>
                   )}
                   {video.client && (
-                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
+                    <Text as="span" textColor="Gray" fontSize="body">
                       Client: {video.client}
                     </Text>
                   )}
                   {video.production && (
-                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
+                    <Text as="span" textColor="Gray" fontSize="body">
                       Production: {video.production}
                     </Text>
                   )}
                 </div>
                 <Dialog.CloseTrigger asChild>
                   <Button className={styles.closeBtnDesktop} aria-label="Chiudi">
-                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
+                    <Text as="span" textColor="Gray" fontSize="body">
                       Close
                     </Text>
                   </Button>
