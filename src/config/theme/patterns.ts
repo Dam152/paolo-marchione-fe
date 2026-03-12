@@ -13,9 +13,9 @@ export const container = definePattern({
       maxWidth: fluid
         ? '100%'
         : {
-            base: 'min(1360px, calc(100% - 32px))',
-            md: 'min(1360px, calc(100% - 48px))',
-            lg: 'min(1360px, calc(100% - 64px))',
+            base: 'min(1048px, calc(100% - 32px))',
+            md: 'min(1048px, calc(100% - 48px))',
+            xl: 'min(1048px, calc(100% - 64px))',
             '2xl': 'min(1360px, calc(100% - 96px))',
           },
       mx: 'auto',
