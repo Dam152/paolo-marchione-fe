@@ -215,22 +215,22 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
               <div className={styles.metaRow}>
                 <div className={styles.infoRow}>
                   {video.title && (
-                    <Text as="span" textColor="Gray" fontSize="body">
+                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
                       Title: {video.title}
                     </Text>
                   )}
                   {video.starring && (
-                    <Text as="span" textColor="Gray" fontSize="body">
+                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
                       Starring: {video.starring}
                     </Text>
                   )}
                   {video.client && (
-                    <Text as="span" textColor="Gray" fontSize="body">
+                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
                       Client: {video.client}
                     </Text>
                   )}
                   {video.production && (
-                    <Text as="span" textColor="Gray" fontSize="body">
+                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
                       Production: {video.production}
                     </Text>
                   )}

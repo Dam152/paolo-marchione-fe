@@ -31,7 +31,6 @@ export const typography = defineTextStyles({
     value: {
       fontSize: {
         base: '1.6rem',
-        md: '2rem',
       },
     },
   },

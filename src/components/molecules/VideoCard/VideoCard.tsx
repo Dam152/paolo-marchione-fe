@@ -3,8 +3,8 @@
 import { NextImage } from '@/components/atoms/NextImage';
 import { EmbedField, ImageField, KeyTextField } from '@prismicio/client';
 import { useRef, useState } from 'react';
-import { css } from '../../../../panda/css';
-import { text } from '../../../../panda/recipes';
+import { css, cx } from '../../../../panda/css';
+import { Text } from '@/components/atoms/Text';
 
 type VideoCardProps = {
   title: string | KeyTextField;
@@ -104,9 +104,11 @@ export function VideoCard({
         <div
           data-overlay
           aria-hidden="true"
-          className={`${styles.overlay}${revealed ? ` ${styles.overlayRevealed}` : ''}`}
+          className={cx(styles.overlay, revealed && styles.overlayRevealed)}
         >
-          <span className={text({ fontSize: 'bodyLarge', textColor: 'White' })}>{title}</span>
+          <Text as="span" fontSize="bodyLarge" textColor="White">
+            {title}
+          </Text>
         </div>
       )}
     </div>
