@@ -53,6 +53,15 @@ const styles = {
     px: '16px',
     display: 'flex',
     flexDirection: 'column',
+    // Landscape su phone/tablet: layout a due colonne
+    '@media (orientation: landscape) and (max-width: 1023px)': {
+      position: 'relative',
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: '24px',
+      py: '16px',
+      px: '16px',
+    },
     md: { px: '24px', maxW: 'min(1360px, calc(100% - 48px))', mx: 'auto' },
     lg: { px: '32px', maxW: 'min(1360px, calc(100% - 64px))' },
     '2xl': { px: '48px', maxW: 'min(1360px, calc(100% - 96px))' },
@@ -67,6 +76,14 @@ const styles = {
     '2xl': { maxWidth: '1088px' },
     aspectRatio: '1088/611',
     overflow: 'hidden',
+    // Landscape su phone/tablet: altezza vincolata al viewport, larghezza proporzionale
+    '@media (orientation: landscape) and (max-width: 1023px)': {
+      flex: '0 0 auto',
+      mx: '0',
+      w: 'auto',
+      maxH: 'calc(var(--root-height, 100dvh) - 32px)',
+      maxW: 'calc((var(--root-height, 100dvh) - 32px) * 1088 / 611)',
+    },
     '& iframe': { w: '100%', h: '100%', display: 'block' },
   }),
   metaRow: css({
@@ -77,6 +94,13 @@ const styles = {
     alignItems: 'flex-start',
     gap: '16px',
     mt: '32px',
+    // Landscape su phone/tablet: colonna laterale destra
+    '@media (orientation: landscape) and (max-width: 1023px)': {
+      flex: '1',
+      mt: '0',
+      flexDirection: 'column',
+      maxWidth: 'none',
+    },
     md: {
       maxWidth: '840px',
       flexDirection: 'row',
@@ -112,6 +136,12 @@ const styles = {
     color: 'token(colors.Gray)',
     transition: 'opacity 0.2s',
     _hover: { opacity: 0.6 },
+    '@media (orientation: landscape) and (max-width: 1023px)': {
+      position: 'absolute',
+      top: '12px',
+      right: '16px',
+      mb: '0',
+    },
     md: { display: 'none' },
   }),
   closeBtnDesktop: css({
