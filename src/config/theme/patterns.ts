@@ -14,7 +14,7 @@ export const container = definePattern({
         ? '100%'
         : {
             base: 'min(840px, calc(100% - 32px))',
-            md: 'min(1280px, calc(100% - 48px))',
+            md: 'min(1080px, calc(100% - 48px))',
             xl: 'min(1360px, calc(100% - 64px))',
           },
       mx: 'auto',
