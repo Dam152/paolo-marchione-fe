@@ -54,7 +54,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     // Landscape su phone/tablet: layout a due colonne
-    '@media (orientation: landscape) and (max-width: 1023px)': {
+    '@media (orientation: landscape) and (pointer: coarse)': {
       position: 'relative',
       flexDirection: 'row',
       alignItems: 'center',
@@ -72,17 +72,16 @@ const styles = {
     w: '100%',
     mx: 'auto',
     md: { maxWidth: '840px' },
-    xl: { maxWidth: '960px' },
+    xl: { maxWidth: '840px' },
     '2xl': { maxWidth: '1088px' },
     aspectRatio: '1088/611',
     overflow: 'hidden',
     // Landscape su phone/tablet: altezza vincolata al viewport, larghezza proporzionale
-    '@media (orientation: landscape) and (max-width: 1023px)': {
-      flex: '0 0 auto',
+    '@media (orientation: landscape) and (pointer: coarse)': {
+      flex: '1 1 0',
       mx: '0',
-      w: 'auto',
+      w: '0',
       maxH: 'calc(var(--root-height, 100dvh) - 32px)',
-      maxW: 'calc((var(--root-height, 100dvh) - 32px) * 1088 / 611)',
     },
     '& iframe': { w: '100%', h: '100%', display: 'block' },
   }),
@@ -95,8 +94,8 @@ const styles = {
     gap: '16px',
     mt: '32px',
     // Landscape su phone/tablet: colonna laterale destra
-    '@media (orientation: landscape) and (max-width: 1023px)': {
-      flex: '1',
+    '@media (orientation: landscape) and (pointer: coarse)': {
+      flex: '1 1 0',
       mt: '0',
       flexDirection: 'column',
       maxWidth: 'none',
@@ -108,7 +107,7 @@ const styles = {
       alignItems: 'flex-start',
     },
     xl: {
-      maxWidth: '960px',
+      maxWidth: '840px',
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
@@ -136,13 +135,14 @@ const styles = {
     color: 'token(colors.Gray)',
     transition: 'opacity 0.2s',
     _hover: { opacity: 0.6 },
-    '@media (orientation: landscape) and (max-width: 1023px)': {
+    md: { display: 'none' },
+    '@media (orientation: landscape) and (pointer: coarse)': {
+      display: 'flex',
       position: 'absolute',
       top: '12px',
       right: '16px',
       mb: '0',
     },
-    md: { display: 'none' },
   }),
   closeBtnDesktop: css({
     display: 'none',
