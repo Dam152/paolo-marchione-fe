@@ -32,7 +32,7 @@ const styles = {
     right: 0,
     h: 'var(--root-height, 100dvh)',
     zIndex: 60,
-    bg: '#191919',
+    bg: 'rgba(25, 25, 25, 0.96)',
     _open: { animation: 'fadeIn 0.25s ease' },
     _closed: { animation: 'fadeOut 0.2s ease' },
   }),
