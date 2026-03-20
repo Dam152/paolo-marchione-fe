@@ -134,13 +134,9 @@ export function HeaderMenu({ items, appName }: HeaderMenuProps) {
                 styles.navButton,
                 text({
                   fontSize: 'bodyLarge',
-                  textColor:
-                    isOpen && item.label !== activeLabel
-                      ? 'Gray'
-                      : 'Black',
+                  textColor: isOpen && item.label !== activeLabel ? 'Gray' : 'Black',
                 }),
               )}
-
               onClick={(e) => {
                 e.stopPropagation();
                 const next = activeLabel === item.label ? null : item.label;
@@ -175,7 +171,21 @@ export function HeaderMenu({ items, appName }: HeaderMenuProps) {
           className={styles.panelInner}
         >
           <div className={cx(container(), styles.panel)}>
-            <Text className={css({ textAlign: 'justify' })}>{displayedContent}</Text>
+            {activeItem?.label?.toLowerCase() === 'contact' ? (
+              <NextLink
+                type="link"
+                href={`mailto:${displayedContent}`}
+                fontSize="bodyLarge"
+                textColor="Black"
+                className={styles.link}
+              >
+                {displayedContent}
+              </NextLink>
+            ) : (
+              <Text fontSize={'bodyLarge'} className={css({ textAlign: 'justify' })}>
+                {displayedContent}
+              </Text>
+            )}
           </div>
         </div>
       </div>

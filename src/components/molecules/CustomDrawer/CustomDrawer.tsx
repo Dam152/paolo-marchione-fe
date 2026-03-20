@@ -208,7 +208,18 @@ export function CustomDrawer({ isOpen, onClose, items, appName }: CustomDrawerPr
 
                   <AccordionItemContent className={styles.accordionContent}>
                     <div className={styles.accordionContentInner}>
-                      <Text className={css({ textAlign: 'justify' })}>{item.content}</Text>
+                      {item.label?.toLowerCase() === 'contact' ? (
+                        <NextLink
+                          type="link"
+                          href={`mailto:${item.content}`}
+                          fontSize="bodyLarge"
+                          textColor="Black"
+                        >
+                          {item.content}
+                        </NextLink>
+                      ) : (
+                        <Text className={css({ textAlign: 'justify' })}>{item.content}</Text>
+                      )}
                     </div>
                   </AccordionItemContent>
                 </AccordionItem>
