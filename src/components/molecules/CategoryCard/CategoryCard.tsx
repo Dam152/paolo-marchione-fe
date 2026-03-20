@@ -63,11 +63,11 @@ export function CategoryCard({
               px: '0',
               py: '0',
               textAlign: 'center',
-              bg: isActive ? '#191919' : 'Gray',
+              bg: isActive ? 'Black' : 'Gray',
               color: isActive ? 'white' : 'black',
               ...(!isActive && {
                 _hover: {
-                  bg: '#191919',
+                  bg: 'Black',
                   color: 'white',
                 },
               }),

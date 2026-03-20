@@ -208,7 +208,7 @@ export function CustomDrawer({ isOpen, onClose, items, appName }: CustomDrawerPr
 
                   <AccordionItemContent className={styles.accordionContent}>
                     <div className={styles.accordionContentInner}>
-                      <Text>{item.content}</Text>
+                      <Text className={css({ textAlign: 'justify' })}>{item.content}</Text>
                     </div>
                   </AccordionItemContent>
                 </AccordionItem>

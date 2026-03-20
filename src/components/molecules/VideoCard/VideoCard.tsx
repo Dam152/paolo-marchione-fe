@@ -22,8 +22,8 @@ const styles = {
     aspectRatio: '1/1',
     overflow: 'hidden',
     cursor: 'pointer',
-    _hover: {
-      '& [data-overlay]': { opacity: 0.7 },
+    '@media (pointer: fine)': {
+      _hover: { '& [data-overlay]': { opacity: 0.7 } },
     },
   }),
   overlay: css({
@@ -68,11 +68,8 @@ export function VideoCard({
 
     if (isTouchRef.current) {
       isTouchRef.current = false;
-      if (!revealed) {
-        setRevealed(true);
-        return;
-      }
-      setRevealed(false);
+      onOpen?.();
+      return;
     }
 
     onOpen?.();

@@ -91,7 +91,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    gap: '16px',
+    gap: '8px',
     mt: '32px',
     // Landscape su phone/tablet: colonna laterale destra
     '@media (orientation: landscape) and (pointer: coarse)': {
@@ -124,7 +124,7 @@ const styles = {
     flexDirection: 'column',
     gap: '4px',
   }),
-  closeBtnMobile: css({
+  closeBtn: css({
     display: 'flex',
     alignSelf: 'flex-end',
     mb: '12px',
@@ -135,54 +135,65 @@ const styles = {
     color: 'token(colors.Gray)',
     transition: 'opacity 0.2s',
     _hover: { opacity: 0.6 },
-    md: { display: 'none' },
     '@media (orientation: landscape) and (pointer: coarse)': {
-      display: 'flex',
       position: 'absolute',
       top: '12px',
       right: '16px',
       mb: '0',
     },
+    md: {
+      w: '100%',
+      maxW: '840px',
+      mx: 'auto',
+      alignSelf: 'auto',
+      justifyContent: 'flex-end',
+      mb: '12px',
+    },
+    '2xl': { maxW: '1088px' },
   }),
-  closeBtnDesktop: css({
-    display: 'none',
-    alignItems: 'center',
-    gap: '6px',
-    cursor: 'pointer',
-    bg: 'transparent',
-    border: 'none',
-    p: 0,
-    transition: 'opacity 0.2s',
-    _hover: { opacity: 0.6 },
-    md: { display: 'flex', alignSelf: 'flex-start' },
-  }),
-  // frecce laterali — solo desktop
-  navBtn: css({
+  // container frecce — stesse misure di content
+  navContainer: css({
     display: 'none',
     xl: {
       display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
       position: 'fixed',
       top: '50%',
+      left: 0,
+      right: 0,
       transform: 'translateY(-50%)',
-      color: 'white',
-      cursor: 'pointer',
-      bg: 'transparent',
-      border: 'none',
-      p: '12px',
-      lineHeight: 1,
-      userSelect: 'none',
+      w: '100%',
+      px: '0',
+      mx: 'auto',
+      pointerEvents: 'none',
       zIndex: 62,
-      transition: 'opacity 0.2s',
-      _hover: { opacity: 0.6 },
     },
+
+    md: { maxW: 'min(1052px, calc(100% - 96px))' },
+    '2xl': { maxW: 'min(1440px, calc(100% - 72px))' },
+  }),
+  // frecce laterali
+  navBtn: css({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'white',
+    cursor: 'pointer',
+    bg: 'transparent',
+    border: 'none',
+    p: '12px',
+    lineHeight: 1,
+    userSelect: 'none',
+    pointerEvents: 'auto',
+    transition: 'opacity 0.2s',
+    _hover: { opacity: 0.6 },
   }),
   navBtnDisabled: css({
     opacity: 0.25,
     cursor: 'not-allowed',
     pointerEvents: 'none',
   }),
-  prevBtn: css({ md: { left: '16px' } }),
-  nextBtn: css({ md: { right: '16px' } }),
 };
 
 export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: VideoLightboxProps) {
@@ -216,34 +227,28 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
               if (e.target === e.currentTarget) onClose();
             }}
           >
-            <Button
-              className={cx(
-                styles.navBtn,
-                styles.prevBtn,
-                isPrevDisabled ? styles.navBtnDisabled : undefined,
-              )}
-              onClick={onPrev}
-              disabled={isPrevDisabled}
-              aria-label="Video precedente"
-            >
-              <ChevronLeft size={32} strokeWidth={1} />
-            </Button>
-            <Button
-              className={cx(
-                styles.navBtn,
-                styles.nextBtn,
-                isNextDisabled ? styles.navBtnDisabled : undefined,
-              )}
-              onClick={onNext}
-              disabled={isNextDisabled}
-              aria-label="Video successivo"
-            >
-              <ChevronRight size={32} strokeWidth={1} />
-            </Button>
+            <div className={styles.navContainer}>
+              <Button
+                className={cx(styles.navBtn, isPrevDisabled ? styles.navBtnDisabled : undefined)}
+                onClick={onPrev}
+                disabled={isPrevDisabled}
+                aria-label="Video precedente"
+              >
+                <ChevronLeft size={32} strokeWidth={1} />
+              </Button>
+              <Button
+                className={cx(styles.navBtn, isNextDisabled ? styles.navBtnDisabled : undefined)}
+                onClick={onNext}
+                disabled={isNextDisabled}
+                aria-label="Video successivo"
+              >
+                <ChevronRight size={32} strokeWidth={1} />
+              </Button>
+            </div>
 
             {video && (
               <Dialog.CloseTrigger asChild>
-                <Button className={styles.closeBtnMobile} aria-label="Chiudi">
+                <Button className={styles.closeBtn} aria-label="Chiudi">
                   <X size={24} strokeWidth={1} aria-hidden="true" />
                 </Button>
               </Dialog.CloseTrigger>
@@ -280,13 +285,6 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
                     </Text>
                   )}
                 </div>
-                <Dialog.CloseTrigger asChild>
-                  <Button className={styles.closeBtnDesktop} aria-label="Chiudi">
-                    <Text as="span" textColor="Gray" fontSize="body">
-                      Close
-                    </Text>
-                  </Button>
-                </Dialog.CloseTrigger>
               </div>
             )}
           </Dialog.Content>

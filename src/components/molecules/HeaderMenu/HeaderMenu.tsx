@@ -44,7 +44,8 @@ const styles = {
     },
   }),
   navButton: css({
-    transition: 'color 0.3s ease',
+    transition: 'color 0.3s ease, opacity 0.3s linear',
+    _hover: { opacity: 0.5 },
   }),
   panelWrapper: css({
     display: 'grid',
@@ -85,7 +86,6 @@ const styles = {
 
 export function HeaderMenu({ items, appName }: HeaderMenuProps) {
   const [activeLabel, setActiveLabel] = useState<string | null>(null);
-  const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const activeItem = items.find((i) => i.label === activeLabel);
@@ -135,14 +135,12 @@ export function HeaderMenu({ items, appName }: HeaderMenuProps) {
                 text({
                   fontSize: 'bodyLarge',
                   textColor:
-                    (isOpen && item.label !== activeLabel) ||
-                    (hoveredLabel !== null && item.label === hoveredLabel)
+                    isOpen && item.label !== activeLabel
                       ? 'Gray'
                       : 'Black',
                 }),
               )}
-              onMouseEnter={() => setHoveredLabel(item.label)}
-              onMouseLeave={() => setHoveredLabel(null)}
+
               onClick={(e) => {
                 e.stopPropagation();
                 const next = activeLabel === item.label ? null : item.label;
@@ -177,7 +175,7 @@ export function HeaderMenu({ items, appName }: HeaderMenuProps) {
           className={styles.panelInner}
         >
           <div className={cx(container(), styles.panel)}>
-            <Text>{displayedContent}</Text>
+            <Text className={css({ textAlign: 'justify' })}>{displayedContent}</Text>
           </div>
         </div>
       </div>
