@@ -48,6 +48,8 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
   const [isDesktop, setIsDesktop] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const mountedIds = useRef<Set<string>>(new Set());
+  const categoryRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const collapsibleRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const activeIdBeforeLightbox = useRef<string | null>(null);
   const skipNextWindowClick = useRef(false);
 
@@ -60,8 +62,36 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
   }, []);
 
   function handleCategoryClick(id: string) {
-    setActiveId((prev) => (prev === id ? null : id));
+    const newActiveId = activeId === id ? null : id;
+    setActiveId(newActiveId);
     mountedIds.current.add(id);
+
+    const isMobile = !window.matchMedia('(min-width: 640px)').matches;
+    if (isMobile) {
+      const targetEl = categoryRefs.current.get(id);
+      if (targetEl) {
+        const rect = targetEl.getBoundingClientRect();
+
+        if (newActiveId !== null) {
+          let top = rect.top + window.scrollY;
+
+          if (activeId !== null && activeId !== id) {
+            const prevWrapperEl = categoryRefs.current.get(activeId);
+            const prevCollapsibleEl = collapsibleRefs.current.get(activeId);
+            if (prevWrapperEl && prevCollapsibleEl) {
+              const prevAbsTop = prevWrapperEl.getBoundingClientRect().top + window.scrollY;
+              if (prevAbsTop < top) {
+                top -= prevCollapsibleEl.offsetHeight;
+              }
+            }
+          }
+
+          window.scrollTo({ top: Math.min(top, window.scrollY), behavior: 'smooth' });
+        } else if (rect.top < 0) {
+          window.scrollTo({ top: rect.top + window.scrollY, behavior: 'smooth' });
+        }
+      }
+    }
   }
 
   useEffect(() => {
@@ -116,7 +146,14 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
         const shouldMount = isDesktop || isActive || mountedIds.current.has(category.id);
 
         return (
-          <div key={category.id} className={categoryWrapper}>
+          <div
+            key={category.id}
+            className={categoryWrapper}
+            ref={(el) => {
+              if (el) categoryRefs.current.set(category.id, el);
+              else categoryRefs.current.delete(category.id);
+            }}
+          >
             <CategoryCard
               title={category.data.title}
               className={dimmable}
@@ -132,6 +169,10 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
               className={videosCollapsible}
               style={{ maxHeight: isActive ? `${category.data.video.length * 100}vw` : '0' }}
               onClick={(e) => e.stopPropagation()}
+              ref={(el) => {
+                if (el) collapsibleRefs.current.set(category.id, el);
+                else collapsibleRefs.current.delete(category.id);
+              }}
             >
               {shouldMount &&
                 category.data.video.map((item, index) => {
