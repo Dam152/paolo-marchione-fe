@@ -22,7 +22,7 @@ const fontVariants = Object.fromEntries(
 export const textRecipe = defineRecipe({
   className: 'text',
   description: 'The styles for the Text component',
-  base: { textWrap: 'balance' },
+  base: {},
   variants: {
     fontSize: fontSizeVariants,
     fontWeight: fontWeightVariants,

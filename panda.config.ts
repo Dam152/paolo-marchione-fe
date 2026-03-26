@@ -61,6 +61,7 @@ export default defineConfig({
       fontSize: '1.6rem',
       fontFamily: 'neueMontreal',
       overflowX: 'hidden',
+      textAlign: 'justify',
     },
   },
 });
