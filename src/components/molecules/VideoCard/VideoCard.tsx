@@ -26,6 +26,9 @@ const styles = {
       _hover: { '& [data-overlay]': { opacity: 0.7 } },
     },
   }),
+  triggerWrapperDisabled: css({
+    cursor: 'not-allowed',
+  }),
   overlay: css({
     position: 'absolute',
     inset: 0,
@@ -101,7 +104,7 @@ export function VideoCard({
   return (
     <div
       ref={wrapperRef}
-      className={styles.triggerWrapper}
+      className={cx(styles.triggerWrapper, disabled && styles.triggerWrapperDisabled)}
       onClick={handleClick}
       onTouchStart={handleTouchStart}
       onBlur={handleBlur}
