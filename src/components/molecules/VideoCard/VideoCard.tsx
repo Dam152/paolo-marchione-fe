@@ -2,7 +2,7 @@
 
 import { NextImage } from '@/components/atoms/NextImage';
 import { EmbedField, ImageField, KeyTextField } from '@prismicio/client';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { css, cx } from '../../../../panda/css';
 import { Text } from '@/components/atoms/Text';
 
@@ -58,6 +58,25 @@ export function VideoCard({
   const hasVideo = !!videoUrl?.html;
   const [revealed, setRevealed] = useState(false);
   const isTouchRef = useRef(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el || !window.matchMedia('(pointer: coarse)').matches) return;
+
+    const isTablet = window.matchMedia('(min-width: 640px)').matches;
+    const threshold = isTablet ? 0.85 : 0.6;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setRevealed(entry.intersectionRatio >= threshold);
+      },
+      { threshold: [0, threshold] },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   function handleTouchStart() {
     isTouchRef.current = true;
@@ -81,6 +100,7 @@ export function VideoCard({
 
   return (
     <div
+      ref={wrapperRef}
       className={styles.triggerWrapper}
       onClick={handleClick}
       onTouchStart={handleTouchStart}

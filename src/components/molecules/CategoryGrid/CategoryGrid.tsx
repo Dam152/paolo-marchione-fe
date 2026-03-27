@@ -69,27 +69,27 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
     const isMobile = !window.matchMedia('(min-width: 640px)').matches;
     if (isMobile) {
       const targetEl = categoryRefs.current.get(id);
-      if (targetEl) {
-        const rect = targetEl.getBoundingClientRect();
+      if (!targetEl) return;
 
-        if (newActiveId !== null) {
-          let top = rect.top + window.scrollY;
+      const rect = targetEl.getBoundingClientRect();
 
-          if (activeId !== null && activeId !== id) {
-            const prevWrapperEl = categoryRefs.current.get(activeId);
-            const prevCollapsibleEl = collapsibleRefs.current.get(activeId);
-            if (prevWrapperEl && prevCollapsibleEl) {
-              const prevAbsTop = prevWrapperEl.getBoundingClientRect().top + window.scrollY;
-              if (prevAbsTop < top) {
-                top -= prevCollapsibleEl.offsetHeight;
-              }
+      if (newActiveId !== null) {
+        let top = rect.top + window.scrollY;
+
+        if (activeId !== null && activeId !== id) {
+          const prevWrapperEl = categoryRefs.current.get(activeId);
+          const prevCollapsibleEl = collapsibleRefs.current.get(activeId);
+          if (prevWrapperEl && prevCollapsibleEl) {
+            const prevAbsTop = prevWrapperEl.getBoundingClientRect().top + window.scrollY;
+            if (prevAbsTop < top) {
+              top -= prevCollapsibleEl.offsetHeight;
             }
           }
-
-          window.scrollTo({ top: Math.min(top, window.scrollY), behavior: 'smooth' });
-        } else if (rect.top < 0) {
-          window.scrollTo({ top: rect.top + window.scrollY, behavior: 'smooth' });
         }
+
+        window.scrollTo({ top: Math.max(0, top - 160), behavior: 'instant' });
+      } else if (rect.top < 0) {
+        window.scrollTo({ top: rect.top + window.scrollY, behavior: 'instant' });
       }
     }
   }
