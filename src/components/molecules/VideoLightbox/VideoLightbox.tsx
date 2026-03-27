@@ -143,15 +143,15 @@ const styles = {
     },
     md: {
       w: '100%',
-      maxW: '840px',
+      maxW: '900px',
       mx: 'auto',
       alignSelf: 'auto',
       justifyContent: 'flex-end',
       mb: '12px',
     },
-    '2xl': { maxW: '1088px' },
+    '2xl': { maxW: '1148px' },
   }),
-  // container frecce — stesse misure di content
+  // container frecce — segue il pattern del content container, frecce a 48px dai bordi
   navContainer: css({
     display: 'none',
     xl: {
@@ -164,14 +164,16 @@ const styles = {
       right: 0,
       transform: 'translateY(-50%)',
       w: '100%',
-      px: '0',
+      maxW: 'min(1360px, calc(100% - 64px))', // stesso pattern di content a lg/xl
       mx: 'auto',
+      px: '24px',
       pointerEvents: 'none',
       zIndex: 62,
     },
-
-    md: { maxW: 'min(1052px, calc(100% - 96px))' },
-    '2xl': { maxW: 'min(1440px, calc(100% - 72px))' },
+    '2xl': {
+      maxW: 'min(1360px, calc(100% - 64px))', // stesso pattern di content a 2xl
+      px: '24px',
+    },
   }),
   // frecce laterali
   navBtn: css({
