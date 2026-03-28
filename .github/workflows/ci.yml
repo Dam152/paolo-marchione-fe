@@ -19,7 +19,7 @@ jobs:
       NEXT_PUBLIC_REVALIDATE_TIME: 5
       NEXT_PUBLIC_MAIL: info@paolomarchione.com
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: pnpm/action-setup@v4
 
