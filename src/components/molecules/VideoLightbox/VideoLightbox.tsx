@@ -127,7 +127,6 @@ const styles = {
   infoRow: css({
     display: 'flex',
     flexDirection: 'column',
-    gap: '4px',
   }),
   closeBtn: css({
     display: 'flex',
@@ -272,7 +271,10 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
                     sizes="(max-width: 768px) 100vw, 1088px"
                   />
                 ) : (
-                  <div dangerouslySetInnerHTML={{ __html: video.videoUrl.html! }} style={{ width: '100%', height: '100%' }} />
+                  <div
+                    dangerouslySetInnerHTML={{ __html: video.videoUrl.html! }}
+                    style={{ width: '100%', height: '100%' }}
+                  />
                 )}
               </div>
             )}
