@@ -200,7 +200,7 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
                         title={item.title}
                         preload={isPreload}
                         disabled={dimmed}
-                        onOpen={
+                        onOpenAction={
                           currentPlayableIndex >= 0
                             ? () => {
                                 activeIdBeforeLightbox.current = activeId;
@@ -220,9 +220,9 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
       <VideoLightbox
         videos={playableVideos}
         openIndex={openIndex}
-        onClose={handleClose}
-        onPrev={handlePrev}
-        onNext={handleNext}
+        onCloseAction={handleClose}
+        onPrevAction={handlePrev}
+        onNextAction={handleNext}
       />
     </>
   );
