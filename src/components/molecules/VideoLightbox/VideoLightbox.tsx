@@ -2,7 +2,8 @@
 
 import { Dialog } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
-import { EmbedField, KeyTextField } from '@prismicio/client';
+import { EmbedField, ImageField, KeyTextField } from '@prismicio/client';
+import Image from 'next/image';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { css, cx } from '../../../../panda/css';
 import { Button } from '@/components/atoms/Button';
@@ -16,6 +17,7 @@ export type VideoMetadataItem = {
 export type VideoItem = {
   metadata: VideoMetadataItem[];
   videoUrl: EmbedField;
+  overlayImage?: ImageField;
 };
 
 type VideoLightboxProps = {
@@ -71,6 +73,7 @@ const styles = {
     _closed: { animation: 'fadeOut 0.2s ease' },
   }),
   videoWrapper: css({
+    position: 'relative',
     w: '100%',
     mx: 'auto',
     md: { maxWidth: '840px' },
@@ -258,11 +261,20 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
               </Dialog.CloseTrigger>
             )}
 
-            {video?.videoUrl?.html && (
-              <div
-                className={styles.videoWrapper}
-                dangerouslySetInnerHTML={{ __html: video.videoUrl.html }}
-              />
+            {video && (video.overlayImage?.url || video.videoUrl?.html) && (
+              <div className={styles.videoWrapper}>
+                {video.overlayImage?.url ? (
+                  <Image
+                    src={video.overlayImage.url}
+                    alt={video.overlayImage.alt || ''}
+                    fill
+                    style={{ objectFit: 'contain' }}
+                    sizes="(max-width: 768px) 100vw, 1088px"
+                  />
+                ) : (
+                  <div dangerouslySetInnerHTML={{ __html: video.videoUrl.html! }} style={{ width: '100%', height: '100%' }} />
+                )}
+              </div>
             )}
 
             {video && (

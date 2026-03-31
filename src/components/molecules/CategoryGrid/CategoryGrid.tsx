@@ -111,13 +111,14 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
     () =>
       categories.flatMap((cat) =>
         cat.data.video
-          .filter((item) => !!item.video?.html)
+          .filter((item) => !!item.video?.html || !!item.overlay_image?.url)
           .map((item) => ({
             metadata: [
               ...(item.title ? [{ label: 'Title', text: item.title }] : []),
               ...(item.metadata ?? []),
             ],
             videoUrl: item.video,
+            overlayImage: item.overlay_image?.url ? item.overlay_image : undefined,
           })),
       ),
     [categories],
@@ -178,7 +179,7 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
                 category.data.video.map((item, index) => {
                   const isPreload = videoIndex < preloadCount;
                   const videoDelay = videoIndex++;
-                  const hasVideo = !!item.video?.html;
+                  const hasVideo = !!item.video?.html || !!item.overlay_image?.url;
                   const currentPlayableIndex = hasVideo ? playableIndex++ : -1;
 
                   return (

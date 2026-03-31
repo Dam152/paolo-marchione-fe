@@ -72,6 +72,14 @@
                 "label": "Video",
                 "placeholder": "url"
               }
+            },
+            "overlay_image": {
+              "type": "Image",
+              "config": {
+                "label": "Overlay Image",
+                "constraint": {},
+                "thumbnails": []
+              }
             }
           }
         }

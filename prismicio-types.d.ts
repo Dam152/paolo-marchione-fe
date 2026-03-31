@@ -125,6 +125,16 @@ export interface CategoryDocumentDataVideoItem {
    * - **Documentation**: https://prismic.io/docs/fields/embed
    */
   video: prismic.EmbedField;
+
+  /**
+   * Overlay Image field in *Category → Video*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: category.video[].overlay_image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  overlay_image: prismic.ImageField<never>;
 }
 
 /**
