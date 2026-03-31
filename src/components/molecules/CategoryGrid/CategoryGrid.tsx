@@ -113,10 +113,7 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
         cat.data.video
           .filter((item) => !!item.video?.html || !!item.overlay_image?.url)
           .map((item) => ({
-            metadata: [
-              ...(item.title ? [{ label: 'Title', text: item.title }] : []),
-              ...(item.metadata ?? []),
-            ],
+            metadata: [...(item.metadata ?? [])],
             videoUrl: item.video,
             overlayImage: item.overlay_image?.url ? item.overlay_image : undefined,
           })),
