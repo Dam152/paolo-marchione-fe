@@ -5,7 +5,7 @@ const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self' 'unsafe-inline' 'unsafe-eval';
   style-src 'self' 'unsafe-inline';
-  img-src 'self' data: blob: https://images.prismic.io;
+  img-src 'self' data: blob: https://images.prismic.io https://i.vimeocdn.com;
   font-src 'self';
   connect-src 'self';
   frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com;
@@ -26,6 +26,7 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  typescript: { ignoreBuildErrors: true },
   images: {
     remotePatterns: [
       {

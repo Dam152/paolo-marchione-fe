@@ -2,7 +2,7 @@
 
 import { NextImage } from '@/components/atoms/NextImage';
 import { EmbedField, ImageField, KeyTextField } from '@prismicio/client';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { css, cx } from '../../../../panda/css';
 import { Text } from '@/components/atoms/Text';
 
@@ -12,7 +12,7 @@ type VideoCardProps = {
   image: ImageField;
   preload?: boolean;
   disabled?: boolean;
-  onOpen?: () => void;
+  onOpenAction?: () => void;
 };
 
 const styles = {
@@ -22,9 +22,7 @@ const styles = {
     aspectRatio: '1/1',
     overflow: 'hidden',
     cursor: 'pointer',
-    '@media (pointer: fine)': {
-      _hover: { '& [data-overlay]': { opacity: 0.7 } },
-    },
+    _hover: { '& [data-overlay]': { opacity: 0.7 } },
   }),
   triggerWrapperDisabled: css({
     cursor: 'not-allowed',
@@ -41,9 +39,6 @@ const styles = {
     p: '16px',
     pointerEvents: 'none',
   }),
-  overlayRevealed: css({
-    opacity: 0.7,
-  }),
   image: css({
     w: '100%',
     aspectRatio: '1/1',
@@ -56,30 +51,10 @@ export function VideoCard({
   image,
   preload,
   disabled = false,
-  onOpen,
+  onOpenAction,
 }: VideoCardProps) {
   const hasVideo = !!videoUrl?.html;
-  const [revealed, setRevealed] = useState(false);
   const isTouchRef = useRef(false);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = wrapperRef.current;
-    if (!el || !window.matchMedia('(pointer: coarse)').matches) return;
-
-    const isTablet = window.matchMedia('(min-width: 640px)').matches;
-    const threshold = isTablet ? 0.85 : 0.6;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setRevealed(entry.intersectionRatio >= threshold);
-      },
-      { threshold: [0, threshold] },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
 
   function handleTouchStart() {
     isTouchRef.current = true;
@@ -87,27 +62,15 @@ export function VideoCard({
 
   function handleClick() {
     if (disabled || !hasVideo) return;
-
-    if (isTouchRef.current) {
-      isTouchRef.current = false;
-      onOpen?.();
-      return;
-    }
-
-    onOpen?.();
-  }
-
-  function handleBlur() {
-    setRevealed(false);
+    isTouchRef.current = false;
+    onOpenAction?.();
   }
 
   return (
     <div
-      ref={wrapperRef}
       className={cx(styles.triggerWrapper, disabled && styles.triggerWrapperDisabled)}
       onClick={handleClick}
       onTouchStart={handleTouchStart}
-      onBlur={handleBlur}
       tabIndex={0}
     >
       <NextImage
@@ -121,11 +84,7 @@ export function VideoCard({
         height={image.dimensions?.height}
       />
       {!disabled && (
-        <div
-          data-overlay
-          aria-hidden="true"
-          className={cx(styles.overlay, revealed && styles.overlayRevealed)}
-        >
+        <div data-overlay aria-hidden="true" className={styles.overlay}>
           <Text as="span" fontSize="bodyLarge" textColor="White">
             {title}
           </Text>

@@ -23,9 +23,9 @@ export type VideoItem = {
 type VideoLightboxProps = {
   videos: VideoItem[];
   openIndex: number | null;
-  onClose: () => void;
-  onPrev: () => void;
-  onNext: () => void;
+  onCloseAction: () => void;
+  onPrevAction: () => void;
+  onNextAction: () => void;
 };
 
 const styles = {
@@ -202,7 +202,13 @@ const styles = {
   }),
 };
 
-export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: VideoLightboxProps) {
+export function VideoLightbox({
+  videos,
+  openIndex,
+  onCloseAction,
+  onPrevAction,
+  onNextAction,
+}: VideoLightboxProps) {
   const isOpen = openIndex !== null;
   const video = isOpen ? videos[openIndex] : null;
   const isPrevDisabled = openIndex === 0;
@@ -212,7 +218,7 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
     <Dialog.Root
       open={isOpen}
       onOpenChange={({ open }) => {
-        if (!open) onClose();
+        if (!open) onCloseAction();
       }}
       preventScroll
       lazyMount
@@ -224,19 +230,19 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
         <Dialog.Positioner
           className={styles.positioner}
           onClick={(e) => {
-            if (e.target === e.currentTarget) onClose();
+            if (e.target === e.currentTarget) onCloseAction();
           }}
         >
           <Dialog.Content
             className={styles.content}
             onClick={(e) => {
-              if (e.target === e.currentTarget) onClose();
+              if (e.target === e.currentTarget) onCloseAction();
             }}
           >
             <div className={styles.navContainer}>
               <Button
                 className={cx(styles.navBtn, isPrevDisabled ? styles.navBtnDisabled : undefined)}
-                onClick={onPrev}
+                onClick={onPrevAction}
                 disabled={isPrevDisabled}
                 aria-label="Video precedente"
               >
@@ -244,7 +250,7 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
               </Button>
               <Button
                 className={cx(styles.navBtn, isNextDisabled ? styles.navBtnDisabled : undefined)}
-                onClick={onNext}
+                onClick={onNextAction}
                 disabled={isNextDisabled}
                 aria-label="Video successivo"
               >

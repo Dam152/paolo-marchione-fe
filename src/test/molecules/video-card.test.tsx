@@ -49,35 +49,35 @@ describe('VideoCard', () => {
   });
 
   describe('interaction', () => {
-    it('calls onOpen when clicked with a valid video', () => {
-      const onOpen = vi.fn();
-      render(<VideoCard {...defaultProps} onOpen={onOpen} />);
+    it('calls onOpenAction when clicked with a valid video', () => {
+      const onOpenAction = vi.fn();
+      render(<VideoCard {...defaultProps} onOpenAction={onOpenAction} />);
 
       fireEvent.click(screen.getByRole('img', { name: 'Test thumbnail' }));
 
-      expect(onOpen).toHaveBeenCalledTimes(1);
+      expect(onOpenAction).toHaveBeenCalledTimes(1);
     });
 
-    it('does not call onOpen when disabled', () => {
-      const onOpen = vi.fn();
-      render(<VideoCard {...defaultProps} disabled onOpen={onOpen} />);
+    it('does not call onOpenAction when disabled', () => {
+      const onOpenAction = vi.fn();
+      render(<VideoCard {...defaultProps} disabled onOpenAction={onOpenAction} />);
 
       fireEvent.click(screen.getByRole('img', { name: 'Test thumbnail' }));
 
-      expect(onOpen).not.toHaveBeenCalled();
+      expect(onOpenAction).not.toHaveBeenCalled();
     });
 
-    it('does not call onOpen when videoUrl.html is null', () => {
-      const onOpen = vi.fn();
+    it('does not call onOpenAction when videoUrl.html is null', () => {
+      const onOpenAction = vi.fn();
       const noVideo = { html: null } as EmbedField;
-      render(<VideoCard {...defaultProps} videoUrl={noVideo} onOpen={onOpen} />);
+      render(<VideoCard {...defaultProps} videoUrl={noVideo} onOpenAction={onOpenAction} />);
 
       fireEvent.click(screen.getByRole('img', { name: 'Test thumbnail' }));
 
-      expect(onOpen).not.toHaveBeenCalled();
+      expect(onOpenAction).not.toHaveBeenCalled();
     });
 
-    it('does not throw when onOpen is not provided', () => {
+    it('does not throw when onOpenAction is not provided', () => {
       render(<VideoCard {...defaultProps} />);
 
       expect(() =>
