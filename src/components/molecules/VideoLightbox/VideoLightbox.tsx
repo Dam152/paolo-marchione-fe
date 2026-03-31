@@ -8,11 +8,13 @@ import { css, cx } from '../../../../panda/css';
 import { Button } from '@/components/atoms/Button';
 import { Text } from '@/components/atoms/Text';
 
+export type VideoMetadataItem = {
+  label: string | KeyTextField;
+  text: string | KeyTextField;
+};
+
 export type VideoItem = {
-  title: string | KeyTextField;
-  starring: string | KeyTextField;
-  client: string | KeyTextField;
-  production: string | KeyTextField;
+  metadata: VideoMetadataItem[];
   videoUrl: EmbedField;
 };
 
@@ -266,25 +268,12 @@ export function VideoLightbox({ videos, openIndex, onClose, onPrev, onNext }: Vi
             {video && (
               <div className={styles.metaRow}>
                 <div className={styles.infoRow}>
-                  {video.title && (
-                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
-                      Title: {video.title}
-                    </Text>
-                  )}
-                  {video.starring && (
-                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
-                      Starring: {video.starring}
-                    </Text>
-                  )}
-                  {video.client && (
-                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
-                      Client: {video.client}
-                    </Text>
-                  )}
-                  {video.production && (
-                    <Text as="span" textColor="Gray" fontSize="bodyLarge">
-                      Production: {video.production}
-                    </Text>
+                  {video.metadata.map((item, i) =>
+                    item.label && item.text ? (
+                      <Text key={i} as="span" textColor="Gray" fontSize="bodyLarge">
+                        {item.label}: {item.text}
+                      </Text>
+                    ) : null,
                   )}
                 </div>
               </div>

@@ -32,25 +32,27 @@
                 "placeholder": "title"
               }
             },
-            "starring": {
-              "type": "Text",
+            "metadata": {
+              "type": "Group",
               "config": {
-                "label": "Starring",
-                "placeholder": ""
-              }
-            },
-            "client": {
-              "type": "Text",
-              "config": {
-                "label": "Client",
-                "placeholder": ""
-              }
-            },
-            "production": {
-              "type": "Text",
-              "config": {
-                "label": "Production",
-                "placeholder": ""
+                "label": "Metadata",
+                "repeat": true,
+                "fields": {
+                  "label": {
+                    "type": "Text",
+                    "config": {
+                      "label": "Label",
+                      "placeholder": "es. Starring"
+                    }
+                  },
+                  "text": {
+                    "type": "Text",
+                    "config": {
+                      "label": "Text",
+                      "placeholder": ""
+                    }
+                  }
+                }
               }
             },
             "image": {

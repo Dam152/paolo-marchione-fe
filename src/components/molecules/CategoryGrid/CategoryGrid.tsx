@@ -113,10 +113,10 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
         cat.data.video
           .filter((item) => !!item.video?.html)
           .map((item) => ({
-            title: item.title,
-            starring: item.starring,
-            client: item.client,
-            production: item.production,
+            metadata: [
+              ...(item.title ? [{ label: 'Title', text: item.title }] : []),
+              ...(item.metadata ?? []),
+            ],
             videoUrl: item.video,
           })),
       ),

@@ -58,6 +58,31 @@ type ContentRelationshipFieldWithData<
 }[Exclude<TCustomType[number], string>['id']];
 
 /**
+ * Item in *Category → Video → Metadata*
+ */
+export interface CategoryDocumentDataVideoMetadataItem {
+  /**
+   * Label field in *Category → Video → Metadata*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: es. Starring
+   * - **API ID Path**: category.video[].metadata[].label
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  label: prismic.KeyTextField;
+
+  /**
+   * Text field in *Category → Video → Metadata*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: category.video[].metadata[].text
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  text: prismic.KeyTextField;
+}
+
+/**
  * Item in *Category → Video*
  */
 export interface CategoryDocumentDataVideoItem {
@@ -72,34 +97,14 @@ export interface CategoryDocumentDataVideoItem {
   title: prismic.KeyTextField;
 
   /**
-   * Starring field in *Category → Video*
+   * Metadata field in *Category → Video*
    *
-   * - **Field Type**: Text
+   * - **Field Type**: Group
    * - **Placeholder**: *None*
-   * - **API ID Path**: category.video[].starring
-   * - **Documentation**: https://prismic.io/docs/fields/text
+   * - **API ID Path**: category.video[].metadata[]
+   * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
    */
-  starring: prismic.KeyTextField;
-
-  /**
-   * Client field in *Category → Video*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: category.video[].client
-   * - **Documentation**: https://prismic.io/docs/fields/text
-   */
-  client: prismic.KeyTextField;
-
-  /**
-   * Production field in *Category → Video*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: category.video[].production
-   * - **Documentation**: https://prismic.io/docs/fields/text
-   */
-  production: prismic.KeyTextField;
+  metadata: prismic.NestedGroupField<Simplify<CategoryDocumentDataVideoMetadataItem>>;
 
   /**
    * Image field in *Category → Video*
