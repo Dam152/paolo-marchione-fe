@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { EmbedField, ImageField } from '@prismicio/client';
+import { ImageField } from '@prismicio/client';
 
 import { VideoCard } from '@/components/molecules/VideoCard/VideoCard';
 
@@ -16,14 +16,8 @@ const mockImage = {
   id: 'img-1',
 } as ImageField;
 
-const mockVideo = {
-  html: '<iframe src="https://www.youtube.com/embed/test"></iframe>',
-  embed_url: 'https://www.youtube.com/watch?v=test',
-} as EmbedField;
-
 const defaultProps = {
   title: 'My Video',
-  videoUrl: mockVideo,
   image: mockImage,
 };
 
@@ -67,14 +61,13 @@ describe('VideoCard', () => {
       expect(onOpenAction).not.toHaveBeenCalled();
     });
 
-    it('does not call onOpenAction when videoUrl.html is null', () => {
+    it('calls onOpenAction even when videoUrl.html is null (overlay image may be shown)', () => {
       const onOpenAction = vi.fn();
-      const noVideo = { html: null } as EmbedField;
-      render(<VideoCard {...defaultProps} videoUrl={noVideo} onOpenAction={onOpenAction} />);
+      render(<VideoCard {...defaultProps} onOpenAction={onOpenAction} />);
 
       fireEvent.click(screen.getByRole('img', { name: 'Test thumbnail' }));
 
-      expect(onOpenAction).not.toHaveBeenCalled();
+      expect(onOpenAction).toHaveBeenCalledOnce();
     });
 
     it('does not throw when onOpenAction is not provided', () => {

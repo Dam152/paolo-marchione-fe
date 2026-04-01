@@ -193,7 +193,6 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
                     >
                       <VideoCard
                         image={item.image}
-                        videoUrl={item.video}
                         title={item.title}
                         preload={isPreload}
                         disabled={dimmed}

@@ -1,14 +1,13 @@
 'use client';
 
 import { NextImage } from '@/components/atoms/NextImage';
-import { EmbedField, ImageField, KeyTextField } from '@prismicio/client';
+import { ImageField, KeyTextField } from '@prismicio/client';
 import { useRef } from 'react';
 import { css, cx } from '../../../../panda/css';
 import { Text } from '@/components/atoms/Text';
 
 type VideoCardProps = {
   title: string | KeyTextField;
-  videoUrl: EmbedField;
   image: ImageField;
   preload?: boolean;
   disabled?: boolean;
@@ -25,7 +24,7 @@ const styles = {
     _hover: { '& [data-overlay]': { opacity: 0.7 } },
   }),
   triggerWrapperDisabled: css({
-    cursor: 'not-allowed',
+    cursor: 'default',
   }),
   overlay: css({
     position: 'absolute',
@@ -47,13 +46,11 @@ const styles = {
 
 export function VideoCard({
   title,
-  videoUrl,
   image,
   preload,
   disabled = false,
   onOpenAction,
 }: VideoCardProps) {
-  const hasVideo = !!videoUrl?.html;
   const isTouchRef = useRef(false);
 
   function handleTouchStart() {
@@ -61,7 +58,7 @@ export function VideoCard({
   }
 
   function handleClick() {
-    if (disabled || !hasVideo) return;
+    if (disabled) return;
     isTouchRef.current = false;
     onOpenAction?.();
   }

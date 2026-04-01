@@ -3,11 +3,11 @@
 import { Dialog } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
 import { EmbedField, ImageField, KeyTextField } from '@prismicio/client';
-import Image from 'next/image';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { css, cx } from '../../../../panda/css';
 import { Button } from '@/components/atoms/Button';
 import { Text } from '@/components/atoms/Text';
+import { NextImage } from '@/components/atoms/NextImage';
 
 export type VideoMetadataItem = {
   label: string | KeyTextField;
@@ -155,7 +155,7 @@ const styles = {
     },
     '2xl': { maxW: '1148px' },
   }),
-  // container frecce — segue il pattern del content container, frecce a 48px dai bordi
+  // container frecce — larghezza allineata al container della card grid, frecce fuori dalla griglia
   navContainer: css({
     display: 'none',
     xl: {
@@ -168,16 +168,22 @@ const styles = {
       right: 0,
       transform: 'translateY(-50%)',
       w: '100%',
-      maxW: 'min(1360px, calc(100% - 64px))', // stesso pattern di content a lg/xl
+      maxW: 'min(980px, calc(100% - 48px))', // allineato al container della card grid
       mx: 'auto',
-      px: '24px',
       pointerEvents: 'none',
       zIndex: 62,
     },
     '2xl': {
-      maxW: 'min(1360px, calc(100% - 64px))', // stesso pattern di content a 2xl
-      px: '24px',
+      maxW: 'min(1360px, calc(100% - 64px))', // allineato al container della card grid (2xl)
     },
+  }),
+  // traslazione freccia sinistra: stanghette al bordo griglia, punta fuori
+  navBtnPrev: css({
+    xl: { transform: 'translateX(calc(-100% + 12px))' },
+  }),
+  // traslazione freccia destra: stanghette al bordo griglia, punta fuori
+  navBtnNext: css({
+    xl: { transform: 'translateX(calc(100% - 12px))' },
   }),
   // frecce laterali
   navBtn: css({
@@ -241,7 +247,11 @@ export function VideoLightbox({
           >
             <div className={styles.navContainer}>
               <Button
-                className={cx(styles.navBtn, isPrevDisabled ? styles.navBtnDisabled : undefined)}
+                className={cx(
+                  styles.navBtn,
+                  styles.navBtnPrev,
+                  isPrevDisabled ? styles.navBtnDisabled : undefined,
+                )}
                 onClick={onPrevAction}
                 disabled={isPrevDisabled}
                 aria-label="Video precedente"
@@ -249,7 +259,11 @@ export function VideoLightbox({
                 <ChevronLeft size={32} strokeWidth={1} />
               </Button>
               <Button
-                className={cx(styles.navBtn, isNextDisabled ? styles.navBtnDisabled : undefined)}
+                className={cx(
+                  styles.navBtn,
+                  styles.navBtnNext,
+                  isNextDisabled ? styles.navBtnDisabled : undefined,
+                )}
                 onClick={onNextAction}
                 disabled={isNextDisabled}
                 aria-label="Video successivo"
@@ -269,12 +283,17 @@ export function VideoLightbox({
             {video && (video.overlayImage?.url || video.videoUrl?.html) && (
               <div className={styles.videoWrapper}>
                 {video.overlayImage?.url ? (
-                  <Image
+                  <NextImage
                     src={video.overlayImage.url}
                     alt={video.overlayImage.alt || ''}
                     fill
                     style={{ objectFit: 'contain' }}
                     sizes="(max-width: 768px) 100vw, 1088px"
+                    lazy
+                    className={css({
+                      w: '100%',
+                      h: '100%',
+                    })}
                   />
                 ) : (
                   <div
