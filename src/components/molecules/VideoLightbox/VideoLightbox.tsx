@@ -90,6 +90,20 @@ const styles = {
     },
     '& iframe': { w: '100%', h: '100%', display: 'block' },
   }),
+  // In landscape con overlay image: occupa tutto lo spazio, niente metaRow
+  videoWrapperImageLandscape: css({
+    '@media (orientation: landscape) and (pointer: coarse)': {
+      flex: '1 1 auto',
+      w: '100%',
+      aspectRatio: 'unset',
+      h: 'calc(var(--root-height, 100dvh) - 32px)',
+    },
+  }),
+  metaRowHiddenLandscape: css({
+    '@media (orientation: landscape) and (pointer: coarse)': {
+      display: 'none',
+    },
+  }),
   metaRow: css({
     w: '100%',
     mx: 'auto',
@@ -98,11 +112,13 @@ const styles = {
     alignItems: 'flex-start',
     gap: '8px',
     mt: '32px',
-    // Landscape su phone/tablet: colonna laterale destra
+    // Landscape su phone/tablet: colonna laterale destra, credits dal basso
     '@media (orientation: landscape) and (pointer: coarse)': {
       flex: '1 1 0',
+      alignSelf: 'stretch',
       mt: '0',
       flexDirection: 'column',
+      justifyContent: 'flex-end',
       maxWidth: 'none',
     },
     md: {
@@ -281,7 +297,7 @@ export function VideoLightbox({
             )}
 
             {video && (video.overlayImage?.url || video.videoUrl?.html) && (
-              <div className={styles.videoWrapper}>
+              <div className={cx(styles.videoWrapper, video.overlayImage?.url ? styles.videoWrapperImageLandscape : undefined)}>
                 {video.overlayImage?.url ? (
                   <NextImage
                     src={video.overlayImage.url}
@@ -305,7 +321,7 @@ export function VideoLightbox({
             )}
 
             {video && (
-              <div className={styles.metaRow}>
+              <div className={cx(styles.metaRow, video.overlayImage?.url ? styles.metaRowHiddenLandscape : undefined)}>
                 <div className={styles.infoRow}>
                   {video.metadata.map((item, i) =>
                     item.label && item.text ? (
