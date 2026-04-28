@@ -42,6 +42,10 @@ const styles = {
     w: '100%',
     aspectRatio: '1/1',
   }),
+  overlayText: css({
+    maxW: '60%',
+    textAlign: 'center',
+  }),
 };
 
 export function VideoCard({
@@ -82,7 +86,7 @@ export function VideoCard({
       />
       {!disabled && (
         <div data-overlay aria-hidden="true" className={styles.overlay}>
-          <Text as="span" fontSize="bodyLarge" textColor="White">
+          <Text as="span" fontSize="bodyLarge" textColor="White" className={styles.overlayText}>
             {title}
           </Text>
         </div>
