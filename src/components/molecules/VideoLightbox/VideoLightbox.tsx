@@ -156,10 +156,7 @@ const styles = {
     transition: 'opacity 0.2s',
     _hover: { opacity: 0.6 },
     '@media (orientation: landscape) and (pointer: coarse)': {
-      position: 'absolute',
-      top: '12px',
-      right: '16px',
-      mb: '0',
+      display: 'none',
     },
     md: {
       w: '100%',
@@ -174,7 +171,7 @@ const styles = {
   // container frecce — larghezza allineata al container della card grid, frecce fuori dalla griglia
   navContainer: css({
     display: 'none',
-    xl: {
+    lg: {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -195,11 +192,11 @@ const styles = {
   }),
   // traslazione freccia sinistra: stanghette al bordo griglia, punta fuori
   navBtnPrev: css({
-    xl: { transform: 'translateX(calc(-100% + 12px))' },
+    lg: { transform: 'translateX(calc(-100% - 8px))' },
   }),
   // traslazione freccia destra: stanghette al bordo griglia, punta fuori
   navBtnNext: css({
-    xl: { transform: 'translateX(calc(100% - 12px))' },
+    lg: { transform: 'translateX(calc(100% + 8px))' },
   }),
   // frecce laterali
   navBtn: css({
@@ -225,14 +222,11 @@ const styles = {
 };
 
 function addAutoplay(html: string): string {
-  return html.replace(
-    /(<iframe[^>]+src=["'])([^"']+)(["'])/i,
-    (_, pre, src, post) => {
-      const url = new URL(src);
-      url.searchParams.set('autoplay', '1');
-      return `${pre}${url.toString()}${post}`;
-    },
-  );
+  return html.replace(/(<iframe[^>]+src=["'])([^"']+)(["'])/i, (_, pre, src, post) => {
+    const url = new URL(src);
+    url.searchParams.set('autoplay', '1');
+    return `${pre}${url.toString()}${post}`;
+  });
 }
 
 export function VideoLightbox({
@@ -308,7 +302,12 @@ export function VideoLightbox({
             )}
 
             {video && (video.overlayImage?.url || video.videoUrl?.html) && (
-              <div className={cx(styles.videoWrapper, video.overlayImage?.url ? styles.videoWrapperImageLandscape : undefined)}>
+              <div
+                className={cx(
+                  styles.videoWrapper,
+                  video.overlayImage?.url ? styles.videoWrapperImageLandscape : undefined,
+                )}
+              >
                 {video.overlayImage?.url ? (
                   <NextImage
                     src={video.overlayImage.url}
@@ -332,7 +331,9 @@ export function VideoLightbox({
             )}
 
             {video && (
-              <div className={cx(styles.metaRow, video.overlayImage?.url ? styles.metaRowHiddenLandscape : undefined)}>
+              <div
+                className={cx(styles.metaRow, styles.metaRowHiddenLandscape)}
+              >
                 <div className={styles.infoRow}>
                   {video.metadata.map((item, i) =>
                     item.label && item.text ? (
