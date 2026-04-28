@@ -196,6 +196,7 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
                         title={item.title}
                         preload={isPreload}
                         disabled={dimmed}
+                        onDisabledClickAction={dimmed ? () => setActiveId(null) : undefined}
                         onOpenAction={
                           currentPlayableIndex >= 0
                             ? () => {

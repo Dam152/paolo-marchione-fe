@@ -12,6 +12,7 @@ type VideoCardProps = {
   preload?: boolean;
   disabled?: boolean;
   onOpenAction?: () => void;
+  onDisabledClickAction?: () => void;
 };
 
 const styles = {
@@ -54,6 +55,7 @@ export function VideoCard({
   preload,
   disabled = false,
   onOpenAction,
+  onDisabledClickAction,
 }: VideoCardProps) {
   const isTouchRef = useRef(false);
 
@@ -62,7 +64,10 @@ export function VideoCard({
   }
 
   function handleClick() {
-    if (disabled) return;
+    if (disabled) {
+      onDisabledClickAction?.();
+      return;
+    }
     isTouchRef.current = false;
     onOpenAction?.();
   }
