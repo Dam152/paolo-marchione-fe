@@ -224,6 +224,17 @@ const styles = {
   }),
 };
 
+function addAutoplay(html: string): string {
+  return html.replace(
+    /(<iframe[^>]+src=["'])([^"']+)(["'])/i,
+    (_, pre, src, post) => {
+      const url = new URL(src);
+      url.searchParams.set('autoplay', '1');
+      return `${pre}${url.toString()}${post}`;
+    },
+  );
+}
+
 export function VideoLightbox({
   videos,
   openIndex,
@@ -313,7 +324,7 @@ export function VideoLightbox({
                   />
                 ) : (
                   <div
-                    dangerouslySetInnerHTML={{ __html: video.videoUrl.html! }}
+                    dangerouslySetInnerHTML={{ __html: addAutoplay(video.videoUrl.html!) }}
                     style={{ width: '100%', height: '100%' }}
                   />
                 )}
