@@ -143,6 +143,15 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
         const isActive = activeId === category.id;
         const shouldMount = isDesktop || isActive || mountedIds.current.has(category.id);
 
+        // Pre-calcolo indici SEMPRE, indipendentemente da shouldMount
+        // Altrimenti su mobile le categorie non montate sfasano playableIndex
+        const catVideoStart = videoIndex;
+        const catPlayableIndices: number[] = category.data.video.map((item) => {
+          videoIndex++;
+          const hasVideo = !!item.video?.html || !!item.overlay_image?.url;
+          return hasVideo ? playableIndex++ : -1;
+        });
+
         return (
           <div
             key={category.id}
@@ -174,10 +183,9 @@ export function CategoryGrid({ categories, preloadCount = 4 }: CategoryGridProps
             >
               {shouldMount &&
                 category.data.video.map((item, index) => {
-                  const isPreload = videoIndex < preloadCount;
-                  const videoDelay = videoIndex++;
-                  const hasVideo = !!item.video?.html || !!item.overlay_image?.url;
-                  const currentPlayableIndex = hasVideo ? playableIndex++ : -1;
+                  const isPreload = (catVideoStart + index) < preloadCount;
+                  const videoDelay = catVideoStart + index;
+                  const currentPlayableIndex = catPlayableIndices[index];
 
                   return (
                     <div

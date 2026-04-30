@@ -44,7 +44,7 @@ const styles = {
     aspectRatio: '1/1',
   }),
   overlayText: css({
-    maxW: '60%',
+    maxW: '140px',
     textAlign: 'center',
   }),
 };

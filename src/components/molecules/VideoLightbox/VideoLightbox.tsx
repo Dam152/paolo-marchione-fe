@@ -4,6 +4,8 @@ import { Dialog } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
 import { EmbedField, ImageField, KeyTextField } from '@prismicio/client';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import Player from '@vimeo/player';
 import { css, cx } from '../../../../panda/css';
 import { Button } from '@/components/atoms/Button';
 import { Text } from '@/components/atoms/Text';
@@ -57,46 +59,51 @@ const styles = {
     px: '16px',
     display: 'flex',
     flexDirection: 'column',
-    // Landscape su phone/tablet: layout a due colonne
-    '@media (orientation: landscape) and (pointer: coarse)': {
-      position: 'relative',
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: '24px',
-      py: '16px',
-      px: '16px',
-    },
     md: { px: '24px', maxW: 'min(1360px, calc(100% - 48px))', mx: 'auto' },
     lg: { px: '32px', maxW: 'min(1360px, calc(100% - 64px))' },
     '2xl': { px: '48px', maxW: 'min(1360px, calc(100% - 96px))' },
     _open: { animation: 'fadeIn 0.3s ease' },
     _closed: { animation: 'fadeOut 0.2s ease' },
+    // Landscape: video full-viewport, niente padding né max-width
+    '@media (orientation: landscape) and (pointer: coarse)': {
+      position: 'relative',
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: '0',
+      p: '0',
+      maxW: '100% !important',
+      mx: '0 !important',
+    },
   }),
   videoWrapper: css({
     position: 'relative',
     w: '100%',
     mx: 'auto',
+    bg: 'transparent',
+    '& > div': { bg: 'transparent' },
     md: { maxWidth: '840px' },
     xl: { maxWidth: '840px' },
     '2xl': { maxWidth: '1088px' },
     aspectRatio: '1088/611',
     overflow: 'hidden',
-    // Landscape su phone/tablet: altezza vincolata al viewport, larghezza proporzionale
-    '@media (orientation: landscape) and (pointer: coarse)': {
-      flex: '1 1 0',
-      mx: '0',
-      w: '0',
-      maxH: 'calc(var(--root-height, 100dvh) - 32px)',
-    },
     '& iframe': { w: '100%', h: '100%', display: 'block' },
-  }),
-  // In landscape con overlay image: occupa tutto lo spazio, niente metaRow
-  videoWrapperImageLandscape: css({
+    // Landscape: full-viewport
     '@media (orientation: landscape) and (pointer: coarse)': {
       flex: '1 1 auto',
       w: '100%',
+      maxW: 'none !important',
+      mx: '0',
       aspectRatio: 'unset',
-      h: 'calc(var(--root-height, 100dvh) - 32px)',
+      h: 'var(--root-height, 100dvh)',
+      maxH: 'var(--root-height, 100dvh)',
+    },
+  }),
+  // In landscape con overlay image: stesse regole del videoWrapper
+  videoWrapperImageLandscape: css({
+    '@media (orientation: landscape) and (pointer: coarse)': {
+      w: '100%',
+      aspectRatio: 'unset',
+      h: 'var(--root-height, 100dvh)',
     },
   }),
   metaRowHiddenLandscape: css({
@@ -112,15 +119,6 @@ const styles = {
     alignItems: 'flex-start',
     gap: '8px',
     mt: '32px',
-    // Landscape su phone/tablet: colonna laterale destra, credits dal basso
-    '@media (orientation: landscape) and (pointer: coarse)': {
-      flex: '1 1 0',
-      alignSelf: 'stretch',
-      mt: '0',
-      flexDirection: 'column',
-      justifyContent: 'flex-end',
-      maxWidth: 'none',
-    },
     md: {
       maxWidth: '840px',
       flexDirection: 'row',
@@ -155,9 +153,6 @@ const styles = {
     color: 'token(colors.Gray)',
     transition: 'opacity 0.2s',
     _hover: { opacity: 0.6 },
-    '@media (orientation: landscape) and (pointer: coarse)': {
-      display: 'none',
-    },
     md: {
       w: '100%',
       maxW: '900px',
@@ -167,10 +162,16 @@ const styles = {
       mb: '12px',
     },
     '2xl': { maxW: '1148px' },
+    '@media (orientation: landscape) and (pointer: coarse)': {
+      display: 'none',
+    },
   }),
   // container frecce — larghezza allineata al container della card grid, frecce fuori dalla griglia
   navContainer: css({
     display: 'none',
+    '@media (orientation: landscape) and (pointer: coarse)': {
+      display: 'none',
+    },
     lg: {
       display: 'flex',
       justifyContent: 'space-between',
@@ -241,6 +242,39 @@ export function VideoLightbox({
   const isPrevDisabled = openIndex === 0;
   const isNextDisabled = openIndex === videos.length - 1;
 
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = videoContainerRef.current;
+    if (openIndex === null || !container) return;
+
+    const iframe = container.querySelector('iframe');
+    if (!iframe) return;
+
+    const player = new Player(iframe);
+
+    function tryFullscreen() {
+      if (!window.matchMedia('(orientation: landscape)').matches) return;
+      iframe!.requestFullscreen?.().catch(() => {});
+    }
+
+    function handleOrientationChange() {
+      if (!window.matchMedia('(orientation: landscape)').matches) return;
+      player.getPaused().then((paused) => {
+        if (!paused) iframe!.requestFullscreen?.().catch(() => {});
+      });
+    }
+
+    player.on('play', tryFullscreen);
+    window.addEventListener('orientationchange', handleOrientationChange);
+
+    return () => {
+      player.off('play', tryFullscreen);
+      window.removeEventListener('orientationchange', handleOrientationChange);
+      player.destroy().catch(() => {});
+    };
+  }, [openIndex]);
+
   return (
     <Dialog.Root
       open={isOpen}
@@ -302,38 +336,36 @@ export function VideoLightbox({
             )}
 
             {video && (video.overlayImage?.url || video.videoUrl?.html) && (
-              <div
-                className={cx(
-                  styles.videoWrapper,
-                  video.overlayImage?.url ? styles.videoWrapperImageLandscape : undefined,
-                )}
-              >
+              <div className={styles.videoWrapper}>
                 {video.overlayImage?.url ? (
                   <NextImage
                     src={video.overlayImage.url}
                     alt={video.overlayImage.alt || ''}
                     fill
-                    style={{ objectFit: 'contain' }}
+                    objectFit="cover"
                     sizes="(max-width: 768px) 100vw, 1088px"
                     lazy
-                    className={css({
-                      w: '100%',
-                      h: '100%',
-                    })}
+                    className={css({ w: '100%', h: '100%' })}
                   />
                 ) : (
                   <div
+                    ref={videoContainerRef}
                     dangerouslySetInnerHTML={{ __html: addAutoplay(video.videoUrl.html!) }}
                     style={{ width: '100%', height: '100%' }}
+                    onClick={() => {
+                      const iframe = videoContainerRef.current?.querySelector('iframe');
+                      if (!iframe) return;
+                      if (window.matchMedia('(orientation: landscape)').matches) {
+                        iframe.requestFullscreen?.().catch(() => {});
+                      }
+                    }}
                   />
                 )}
               </div>
             )}
 
             {video && (
-              <div
-                className={cx(styles.metaRow, styles.metaRowHiddenLandscape)}
-              >
+              <div className={cx(styles.metaRow, styles.metaRowHiddenLandscape)}>
                 <div className={styles.infoRow}>
                   {video.metadata.map((item, i) =>
                     item.label && item.text ? (
